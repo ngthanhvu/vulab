@@ -1,0 +1,13 @@
+services:
+  vuthanh:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3005:3005"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NUXT_HOST=0.0.0.0
+      - NUXT_PORT=3005

@@ -1,0 +1,11 @@
+services:
+  vuthanh:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    ports:
+      - "3000:3000"
+    environment:
+      - NUXT_HOST=0.0.0.0
+      - NUXT_PORT=3000
+    restart: unless-stopped
