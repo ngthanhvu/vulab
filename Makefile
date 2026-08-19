@@ -1,4 +1,4 @@
-.PHONY: dev prod build down logs
+.PHONY: dev prod down build logs
 
 dev:
 	docker compose up --build

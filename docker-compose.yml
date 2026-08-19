@@ -1,13 +1,27 @@
 services:
-  vuthanh:
+  frontend:
     build:
-      context: .
+      context: ./frontend
       dockerfile: Dockerfile
+    container_name: vuthanh-frontend
     ports:
       - "3005:3005"
     volumes:
-      - .:/app
+      - ./frontend:/app
       - /app/node_modules
     environment:
       - NUXT_HOST=0.0.0.0
       - NUXT_PORT=3005
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: vuthanh-backend
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    environment:
+      - PORT=3001

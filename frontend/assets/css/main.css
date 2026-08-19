@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&display=swap');
+
+@import "tailwindcss";
+@plugin "daisyui";
+
+@theme {
+  --color-void: #14092B;
+  --color-paper: #F9F6EE;
+  --color-volt: #CCFF00;
+  --color-magenta: #FF007A;
+  --color-cyan: #00E5FF;
+  --color-violet: #7B2CBF;
+
+  --font-display: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  --font-body: 'Be Vietnam Pro', 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --shadow-chunky: 8px 8px 0px 0px #14092B;
+  --shadow-chunky-sm: 4px 4px 0px 0px #14092B;
+  --shadow-chunky-volt: 8px 8px 0px 0px #CCFF00;
+
+  --animate-marquee: marquee 25s linear infinite;
+  --animate-marquee-reverse: marquee-reverse 25s linear infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-blob: blob 7s infinite;
+
+  @keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
+  }
+  @keyframes marquee-reverse {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0%); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+  }
+  @keyframes blob {
+    0%, 100% { transform: translate(0px, 0px) scale(1); }
+    33% { transform: translate(30px, -50px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
+  }
+}
+
+@utility bg-dot-grid {
+  background-image: radial-gradient(rgba(249, 246, 238, 0.15) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+@utility bg-noise-paper {
+  background-color: #F9F6EE;
+  background-image: radial-gradient(rgba(20, 9, 43, 0.04) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+.grain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+[data-theme="vibetheme"] {
+  background-color: #14092B;
+  color: #F9F6EE;
+}
+

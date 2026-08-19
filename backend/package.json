@@ -1,0 +1,15 @@
+{
+  "name": "vuthanh-backend",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "node --env-file=.env index.js",
+    "start": "node --env-file=.env index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "imapflow": "^1.7.1",
+    "mailparser": "^3.9.15"
+  }
+}
