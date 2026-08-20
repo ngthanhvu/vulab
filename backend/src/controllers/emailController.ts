@@ -2,6 +2,7 @@ import type { Request, Response } from 'express'
 import { getEmails, getEmailsByRecipient, getEmailByUid } from '../models/emailStore.js'
 import { fetchEmails } from '../services/imapService.js'
 import { domains } from '../config/domains.js'
+import { redis } from '../config/database.js'
 
 const inboxes = new Map<string, { created: Date; domain: string }>()
 
@@ -14,7 +15,7 @@ function generateRandomString(length = 8): string {
   return result
 }
 
-export function generateEmail(req: Request, res: Response): void {
+export async function generateEmail(req: Request, res: Response): Promise<void> {
   const domain = typeof req.query.domain === 'string' ? req.query.domain : domains[0]
   if (!domains.includes(domain)) {
     res.status(400).json({ error: 'Domain not available' })
@@ -22,24 +23,28 @@ export function generateEmail(req: Request, res: Response): void {
   }
 
   const local = generateRandomString()
-  const address = `${local}@${domain}`
+  const address = `${local}@${domain}`.toLowerCase()
   inboxes.set(address, { created: new Date(), domain })
+
+  // Lưu address vào Redis với TTL 24h để có thể truy cập lại
+  await redis.setEx(`inbox:${address}`, 60 * 60 * 24, JSON.stringify({ createdAt: new Date().toISOString(), domain }))
+
   res.json({ address, domain, createdAt: new Date() })
 }
 
-export function getAllEmails(_req: Request, res: Response): void {
-  res.json(getEmails())
+export async function getAllEmails(_req: Request, res: Response): Promise<void> {
+  res.json(await getEmails())
 }
 
-export function getInbox(req: Request, res: Response): void {
+export async function getInbox(req: Request, res: Response): Promise<void> {
   const { address } = req.params
-  const emails = getEmailsByRecipient(address)
+  const emails = await getEmailsByRecipient(address.toLowerCase())
   res.json({ address, emails, count: emails.length })
 }
 
-export function getEmail(req: Request, res: Response): void {
+export async function getEmail(req: Request, res: Response): Promise<void> {
   const uid = Number(req.params.uid)
-  const email = getEmailByUid(uid)
+  const email = await getEmailByUid(uid)
   if (!email) {
     res.status(404).json({ error: 'Email not found' })
     return

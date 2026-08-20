@@ -14,4 +14,11 @@ export const env = {
   imapUser: getEnv('IMAP_USER', ''),
   imapPass: getEnv('IMAP_PASS', ''),
   mailDomains: getEnv('MAIL_DOMAINS', 'mail.thanhvu.net'),
+  dbHost: getEnv('DB_HOST', 'mysql'),
+  dbPort: Number(getEnv('DB_PORT', '3306')),
+  dbUser: getEnv('DB_USER', 'vuthanh'),
+  dbPass: getEnv('DB_PASS', 'vuthanh123'),
+  dbName: getEnv('DB_NAME', 'vuthanh'),
+  redisHost: getEnv('REDIS_HOST', 'redis'),
+  redisPort: Number(getEnv('REDIS_PORT', '6379')),
 }

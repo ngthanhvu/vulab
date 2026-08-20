@@ -82,7 +82,7 @@ export async function fetchEmails(): Promise<void> {
         })
       }
     }
-    setEmails(newEmails.reverse())
+    await setEmails(newEmails.reverse())
   } catch (err) {
     const error = err instanceof Error ? err : new Error(String(err))
     console.error('Error fetching emails:', error.message)

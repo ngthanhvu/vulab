@@ -1,6 +1,6 @@
 import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
-  ssr: false,
+  ssr: true,
 
   app: {
     head: {
