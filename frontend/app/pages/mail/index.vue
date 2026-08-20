@@ -90,10 +90,39 @@ async function fetchInbox() {
   } catch (e) { console.error(e) }
 }
 
-function copyEmail() {
-  navigator.clipboard.writeText(emailAddress.value)
-  copied.value = true
-  setTimeout(() => copied.value = false, 2000)
+async function copyEmail() {
+  if (!emailAddress.value) return
+
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(emailAddress.value)
+    } else {
+      fallbackCopyText(emailAddress.value)
+    }
+    copied.value = true
+    setTimeout(() => copied.value = false, 2000)
+  } catch (e) {
+    console.error('Copy failed:', e)
+  }
+}
+
+function fallbackCopyText(text: string) {
+  const textarea = document.createElement('textarea')
+  textarea.value = text
+  textarea.style.position = 'fixed'
+  textarea.style.left = '0'
+  textarea.style.top = '0'
+  textarea.style.opacity = '0'
+  document.body.appendChild(textarea)
+  textarea.select()
+
+  try {
+    document.execCommand('copy')
+  } catch (e) {
+    console.error('Fallback copy failed:', e)
+  }
+
+  document.body.removeChild(textarea)
 }
 
 onMounted(() => {
