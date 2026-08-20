@@ -82,16 +82,16 @@ pipeline {
                         fi
 
                         MESSAGE="<b>✅ Deploy thành công</b>
-<b> Job:</b> ${JOB_NAME}
-<b>🔢 Build:</b> #${BUILD_NUMBER}
-<b>🔗 URL:</b> ${BUILD_URL}
-<b> Môi trường:</b> ${DEPLOY_ENV}
-<b> Branch:</b> ${BRANCH_NAME_SAFE}
-<b> Commit:</b> ${COMMIT_HASH}
-<b> Tác giả:</b> ${COMMIT_AUTHOR}
-<b> Nội dung:</b> ${COMMIT_MSG}
-<b>⏱️ Thời gian chạy:</b> ${BUILD_DURATION}
-<b> Thời điểm:</b> ${BUILD_TIMESTAMP}"
+- <b>Job:</b> ${JOB_NAME}
+- <b>Build:</b> #${BUILD_NUMBER}
+- <b>URL:</b> <a href=\"${BUILD_URL}\">click here!!</a>
+- <b>Môi trường:</b> ${DEPLOY_ENV}
+- <b>Branch:</b> ${BRANCH_NAME_SAFE}
+- <b>Commit:</b> ${COMMIT_HASH}
+- <b>Tác giả:</b> ${COMMIT_AUTHOR}
+- <b>Nội dung:</b> ${COMMIT_MSG}
+- <b>Thời gian chạy:</b> ${BUILD_DURATION}
+- <b>Thời điểm:</b> ${BUILD_TIMESTAMP}"
 
                         echo "Đang gửi thông báo Telegram..."
 
@@ -141,16 +141,16 @@ pipeline {
                         fi
 
                         MESSAGE="<b>❌ Deploy thất bại</b>
-<b> Job:</b> ${JOB_NAME}
-<b>🔢 Build:</b> #${BUILD_NUMBER}
-<b>🔗 URL:</b> ${BUILD_URL}
-<b> Môi trường:</b> ${DEPLOY_ENV}
-<b> Branch:</b> ${BRANCH_NAME_SAFE}
-<b> Commit:</b> ${COMMIT_HASH}
-<b> Tác giả:</b> ${COMMIT_AUTHOR}
-<b> Nội dung:</b> ${COMMIT_MSG}
-<b>️ Thời gian chạy:</b> ${BUILD_DURATION}
-<b> Thời điểm:</b> ${BUILD_TIMESTAMP}"
+- <b>Job:</b> ${JOB_NAME}
+- <b>Build:</b> #${BUILD_NUMBER}
+- <b>URL:</b> <a href=\"${BUILD_URL}\">click here!!</a>
+- <b>Môi trường:</b> ${DEPLOY_ENV}
+- <b>Branch:</b> ${BRANCH_NAME_SAFE}
+- <b>Commit:</b> ${COMMIT_HASH}
+- <b>Tác giả:</b> ${COMMIT_AUTHOR}
+- <b>Nội dung:</b> ${COMMIT_MSG}
+- <b>Thời gian chạy:</b> ${BUILD_DURATION}
+- <b>Thời điểm:</b> ${BUILD_TIMESTAMP}"
 
                         echo "Đang gửi thông báo Telegram lỗi..."
 
