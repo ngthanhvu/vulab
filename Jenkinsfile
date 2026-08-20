@@ -25,10 +25,20 @@ pipeline {
             }
         }
 
+        stage('Prepare .env') {
+            steps {
+                withCredentials([file(credentialsId: 'vuthanh-dotenv', variable: 'ENV_FILE')]) {
+                    sh 'cp "$ENV_FILE" .env'
+                }
+                echo 'Đã copy .env từ Jenkins Credentials.'
+            }
+        }
+
         stage('Build & Deploy Docker Compose') {
             steps {
                 script {
                     def deployEnv = params.DEPLOY_ENV ?: 'prod'
+                    env.DEPLOY_ENV = deployEnv
 
                     echo "Môi trường deploy: ${deployEnv}"
 
