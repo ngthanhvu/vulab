@@ -1,3 +1,4 @@
+```groovy
 pipeline {
     agent any
 
@@ -15,12 +16,7 @@ pipeline {
     }
 
     triggers {
-        // Tùy chọn 1: Polling mỗi 5 phút (dễ dùng, không cần webhook từ GitHub)
-        pollSCM('H/5 * * * *')
-
-        // Tùy chọn 2: Dùng GitHub webhook (nhanh hơn, cần plugin GitHub Integration).
-        // Hãy thay thế dòng pollSCM bằng dòng dưới nếu bạn đã cài GitHub plugin + webhook.
-        // githubPush()
+        githubPush()
     }
 
     stages {
@@ -34,7 +30,8 @@ pipeline {
             steps {
                 script {
                     def deployEnv = params.DEPLOY_ENV ?: 'prod'
-                    echo "Môi trưng deploy: ${deployEnv}"
+
+                    echo "Môi trường deploy: ${deployEnv}"
 
                     sh 'chmod +x run-build.sh'
                     sh "./run-build.sh ${deployEnv}"
@@ -46,35 +43,87 @@ pipeline {
     post {
         success {
             echo 'Deploy thành công!'
+
             script {
                 withCredentials([
-                    string(credentialsId: 'TELEGRAM_TOKEN', variable: 'TELEGRAM_TOKEN'),
-                    string(credentialsId: 'TELEGRAM_CHAT_ID', variable: 'TELEGRAM_CHAT_ID')
+                    string(
+                        credentialsId: 'TELEGRAM_TOKEN',
+                        variable: 'TELEGRAM_TOKEN'
+                    ),
+                    string(
+                        credentialsId: 'TELEGRAM_CHAT_ID',
+                        variable: 'TELEGRAM_CHAT_ID'
+                    )
                 ]) {
-                    sh """
-                        curl -s -X POST "https://api.telegram.org/bot\${TELEGRAM_TOKEN}/sendMessage" \\
-                            -d "chat_id=\${TELEGRAM_CHAT_ID}" \\
-                            -d "parse_mode=HTML" \\
-                            -d "text=<b>✅ Deploy thành công</b><br>Job: ${env.JOB_NAME}<br>Build: #${env.BUILD_NUMBER}<br>Môi trường: ${params.DEPLOY_ENV}<br>Branch: ${env.BRANCH_NAME ?: 'N/A'}"
-                    """
+                    sh '''
+                        set -e
+
+                        BRANCH_NAME_SAFE="${BRANCH_NAME:-N/A}"
+
+                        MESSAGE="<b>✅ Deploy thành công</b>
+                        Job: ${JOB_NAME}
+                        Build: #${BUILD_NUMBER}
+                        Môi trường: ${DEPLOY_ENV}
+                        Branch: ${BRANCH_NAME_SAFE}"
+
+                        echo "Đang gửi thông báo Telegram..."
+
+                        curl -sS --fail-with-body \
+                            -X POST \
+                            "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
+                            --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
+                            --data-urlencode "parse_mode=HTML" \
+                            --data-urlencode "text=${MESSAGE}"
+
+                        echo ""
+                        echo "Đã gửi Telegram thành công."
+                    '''
                 }
             }
         }
+
         failure {
             echo 'Deploy thất bại, kiểm tra log phía trên.'
+
             script {
                 withCredentials([
-                    string(credentialsId: 'TELEGRAM_TOKEN', variable: 'TELEGRAM_TOKEN'),
-                    string(credentialsId: 'TELEGRAM_CHAT_ID', variable: 'TELEGRAM_CHAT_ID')
+                    string(
+                        credentialsId: 'TELEGRAM_TOKEN',
+                        variable: 'TELEGRAM_TOKEN'
+                    ),
+                    string(
+                        credentialsId: 'TELEGRAM_CHAT_ID',
+                        variable: 'TELEGRAM_CHAT_ID'
+                    )
                 ]) {
-                    sh """
-                        curl -s -X POST "https://api.telegram.org/bot\${TELEGRAM_TOKEN}/sendMessage" \\
-                            -d "chat_id=\${TELEGRAM_CHAT_ID}" \\
-                            -d "parse_mode=HTML" \\
-                            -d "text=<b>❌ Deploy thất bại</b><br>Job: ${env.JOB_NAME}<br>Build: #${env.BUILD_NUMBER}<br>Môi trường: ${params.DEPLOY_ENV}<br>Branch: ${env.BRANCH_NAME ?: 'N/A'}"
-                    """
+                    sh '''
+                        BRANCH_NAME_SAFE="${BRANCH_NAME:-N/A}"
+
+                        MESSAGE="<b>❌ Deploy thất bại</b>
+                        Job: ${JOB_NAME}
+                        Build: #${BUILD_NUMBER}
+                        Môi trường: ${DEPLOY_ENV}
+                        Branch: ${BRANCH_NAME_SAFE}"
+
+                        echo "Đang gửi thông báo Telegram lỗi..."
+
+                        curl -sS --fail-with-body \
+                            -X POST \
+                            "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
+                            --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
+                            --data-urlencode "parse_mode=HTML" \
+                            --data-urlencode "text=${MESSAGE}" \
+                            || echo "Không gửi được Telegram."
+
+                        echo ""
+                    '''
                 }
             }
+        }
+
+        always {
+            echo "Pipeline hoàn tất."
         }
     }
 }
+```
