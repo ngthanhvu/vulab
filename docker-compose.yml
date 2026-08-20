@@ -18,10 +18,10 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     container_name: vuthanh-backend
-    ports:
-      - "3001:3001"
+    expose:
+      - "3001"
     volumes:
       - ./backend:/app
       - /app/node_modules
-    environment:
-      - PORT=3001
+    env_file:
+      - .env

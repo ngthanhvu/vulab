@@ -14,13 +14,11 @@ export default defineNuxtConfig({
 
   vite: {
     plugins: [tailwindcss() as any],
-    server: {
-      proxy: {
-        '/api': {
-          target: 'http://backend:3001',
-          changeOrigin: true,
-        },
-      },
+  },
+
+  nitro: {
+    routeRules: {
+      '/api/**': { proxy: 'http://backend:3001/api/**' },
     },
   },
 

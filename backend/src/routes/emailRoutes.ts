@@ -5,7 +5,7 @@ import {
   refreshEmails,
   generateEmail,
   getInbox,
-  getDomains
+  getDomains,
 } from '../controllers/emailController.js'
 
 const router = Router()
