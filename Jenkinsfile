@@ -60,10 +60,10 @@ pipeline {
                         BRANCH_NAME_SAFE="${BRANCH_NAME:-N/A}"
 
                         MESSAGE="<b>✅ Deploy thành công</b>
-                        Job: ${JOB_NAME}
-                        Build: #${BUILD_NUMBER}
-                        Môi trường: ${DEPLOY_ENV}
-                        Branch: ${BRANCH_NAME_SAFE}"
+Job: ${JOB_NAME}
+Build: #${BUILD_NUMBER}
+Môi trường: ${DEPLOY_ENV}
+Branch: ${BRANCH_NAME_SAFE}"
 
                         echo "Đang gửi thông báo Telegram..."
 
@@ -99,10 +99,10 @@ pipeline {
                         BRANCH_NAME_SAFE="${BRANCH_NAME:-N/A}"
 
                         MESSAGE="<b>❌ Deploy thất bại</b>
-                        Job: ${JOB_NAME}
-                        Build: #${BUILD_NUMBER}
-                        Môi trường: ${DEPLOY_ENV}
-                        Branch: ${BRANCH_NAME_SAFE}"
+Job: ${JOB_NAME}
+Build: #${BUILD_NUMBER}
+Môi trường: ${DEPLOY_ENV}
+Branch: ${BRANCH_NAME_SAFE}"
 
                         echo "Đang gửi thông báo Telegram lỗi..."
 
