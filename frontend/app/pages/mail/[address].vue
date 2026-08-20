@@ -45,20 +45,25 @@ useHead({
 </script>
 
 <template>
-  <div class="h-screen max-h-screen bg-paper font-body text-void flex flex-col overflow-hidden">
-    <div class="relative z-20 max-w-6xl mx-auto p-4 md:p-6 flex-1 w-full flex flex-col min-h-0 overflow-hidden">
-      <div class="mb-3 md:mb-4 shrink-0">
-        <h1 class="font-display font-black text-2xl mb-1">TEMP MAIL</h1>
-        <p class="font-mono text-sm text-void/60">Inbox của <strong>{{ address }}</strong></p>
+  <div class="min-h-screen bg-paper font-body text-void flex flex-col overflow-x-hidden">
+    <div class="relative z-20 max-w-6xl mx-auto p-4 md:p-6 pb-8 md:pb-12 flex-1 w-full flex flex-col">
+      <div class="mb-3 md:mb-4 shrink-0 flex items-center justify-between">
+        <div>
+          <NuxtLink to="/mail" class="inline-flex items-center text-xs font-mono text-void/60 hover:text-void mb-1">
+            ← TRANG CHỦ TEMP MAIL
+          </NuxtLink>
+          <h1 class="font-display font-black text-2xl mb-1">TEMP MAIL</h1>
+          <p class="font-mono text-sm text-void/60">Inbox của <strong>{{ address }}</strong></p>
+        </div>
       </div>
 
       <div v-if="loading && !emails.length" class="text-center py-12 text-void/40 shrink-0">
         Đang tải...
       </div>
 
-      <div class="flex flex-col md:flex-row gap-4 flex-1 min-h-0">
+      <div class="flex flex-col md:flex-row gap-4 mb-4 md:mb-6 flex-1 min-h-[380px] md:min-h-[420px]">
         <!-- Inbox list column -->
-        <div class="w-full md:w-80 shrink-0 h-55 md:h-full flex flex-col min-h-0">
+        <div class="w-full md:w-80 shrink-0 h-[180px] md:h-full flex flex-col min-h-0">
           <div class="rounded-2xl border-[3px] border-void bg-paper shadow-chunky overflow-hidden flex flex-col h-full">
             <div
               class="border-b-[3px] border-void px-4 py-2 font-mono text-xs tracking-widest uppercase text-void/50 bg-base-200 shrink-0">
@@ -88,7 +93,7 @@ useHead({
         </div>
 
         <!-- Detail column -->
-        <div class="flex-1 h-87.5 md:h-full min-h-0 flex flex-col">
+        <div class="flex-1 h-[330px] md:h-full min-h-0 flex flex-col">
           <div class="rounded-2xl border-[3px] border-void bg-paper shadow-chunky overflow-hidden flex flex-col h-full">
             <div v-if="!selectedEmail" class="flex flex-col items-center justify-center h-full py-16 text-void/20">
               <p class="font-mono text-xs tracking-widest uppercase">Chọn email để đọc</p>

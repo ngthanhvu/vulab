@@ -111,3 +111,9 @@
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+/* Word wrapping utilities */
+.wrap-break-word {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}

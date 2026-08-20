@@ -54,6 +54,9 @@ pipeline {
             echo 'Deploy thành công!'
 
             script {
+                env.BUILD_DURATION = currentBuild.durationString
+                env.BUILD_TIMESTAMP = new Date().format("dd/MM/yyyy HH:mm:ss", TimeZone.getTimeZone("Asia/Ho_Chi_Minh"))
+
                 withCredentials([
                     string(
                         credentialsId: 'TELEGRAM_TOKEN',
@@ -65,15 +68,30 @@ pipeline {
                     )
                 ]) {
                     sh '''
-                        set -e
+                        BRANCH_NAME_SAFE="${GIT_BRANCH:-$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo 'N/A')}"
+                        COMMIT_HASH=$(git rev-parse --short HEAD 2>/dev/null || echo 'N/A')
+                        COMMIT_AUTHOR_RAW=$(git log -1 --pretty=format:'%an' 2>/dev/null || echo 'N/A')
+                        COMMIT_MSG_RAW=$(git log -1 --pretty=format:'%s' 2>/dev/null || echo 'N/A')
 
-                        BRANCH_NAME_SAFE="${BRANCH_NAME:-N/A}"
+                        if command -v python3 >/dev/null 2>&1; then
+                            COMMIT_AUTHOR=$(printf '%s' "$COMMIT_AUTHOR_RAW" | python3 -c 'import html,sys; print(html.escape(sys.stdin.read(), quote=True))')
+                            COMMIT_MSG=$(printf '%s' "$COMMIT_MSG_RAW" | python3 -c 'import html,sys; print(html.escape(sys.stdin.read(), quote=True))')
+                        else
+                            COMMIT_AUTHOR="$COMMIT_AUTHOR_RAW"
+                            COMMIT_MSG="$COMMIT_MSG_RAW"
+                        fi
 
                         MESSAGE="<b>✅ Deploy thành công</b>
-Job: ${JOB_NAME}
-Build: #${BUILD_NUMBER}
-Môi trường: ${DEPLOY_ENV}
-Branch: ${BRANCH_NAME_SAFE}"
+<b> Job:</b> ${JOB_NAME}
+<b>🔢 Build:</b> #${BUILD_NUMBER}
+<b>🔗 URL:</b> <a href=\"${BUILD_URL}\">${BUILD_URL}</a>
+<b> Môi trường:</b> ${DEPLOY_ENV}
+<b> Branch:</b> ${BRANCH_NAME_SAFE}
+<b> Commit:</b> ${COMMIT_HASH}
+<b> Tác giả:</b> ${COMMIT_AUTHOR}
+<b> Nội dung:</b> ${COMMIT_MSG}
+<b>⏱️ Thời gian chạy:</b> ${BUILD_DURATION}
+<b> Thời điểm:</b> ${BUILD_TIMESTAMP}"
 
                         echo "Đang gửi thông báo Telegram..."
 
@@ -95,6 +113,9 @@ Branch: ${BRANCH_NAME_SAFE}"
             echo 'Deploy thất bại, kiểm tra log phía trên.'
 
             script {
+                env.BUILD_DURATION = currentBuild.durationString
+                env.BUILD_TIMESTAMP = new Date().format("dd/MM/yyyy HH:mm:ss", TimeZone.getTimeZone("Asia/Ho_Chi_Minh"))
+
                 withCredentials([
                     string(
                         credentialsId: 'TELEGRAM_TOKEN',
@@ -106,13 +127,30 @@ Branch: ${BRANCH_NAME_SAFE}"
                     )
                 ]) {
                     sh '''
-                        BRANCH_NAME_SAFE="${BRANCH_NAME:-N/A}"
+                        BRANCH_NAME_SAFE="${GIT_BRANCH:-$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo 'N/A')}"
+                        COMMIT_HASH=$(git rev-parse --short HEAD 2>/dev/null || echo 'N/A')
+                        COMMIT_AUTHOR_RAW=$(git log -1 --pretty=format:'%an' 2>/dev/null || echo 'N/A')
+                        COMMIT_MSG_RAW=$(git log -1 --pretty=format:'%s' 2>/dev/null || echo 'N/A')
+
+                        if command -v python3 >/dev/null 2>&1; then
+                            COMMIT_AUTHOR=$(printf '%s' "$COMMIT_AUTHOR_RAW" | python3 -c 'import html,sys; print(html.escape(sys.stdin.read(), quote=True))')
+                            COMMIT_MSG=$(printf '%s' "$COMMIT_MSG_RAW" | python3 -c 'import html,sys; print(html.escape(sys.stdin.read(), quote=True))')
+                        else
+                            COMMIT_AUTHOR="$COMMIT_AUTHOR_RAW"
+                            COMMIT_MSG="$COMMIT_MSG_RAW"
+                        fi
 
                         MESSAGE="<b>❌ Deploy thất bại</b>
-Job: ${JOB_NAME}
-Build: #${BUILD_NUMBER}
-Môi trường: ${DEPLOY_ENV}
-Branch: ${BRANCH_NAME_SAFE}"
+<b> Job:</b> ${JOB_NAME}
+<b>🔢 Build:</b> #${BUILD_NUMBER}
+<b>🔗 URL:</b> <a href=\"${BUILD_URL}\">${BUILD_URL}</a>
+<b> Môi trường:</b> ${DEPLOY_ENV}
+<b> Branch:</b> ${BRANCH_NAME_SAFE}
+<b> Commit:</b> ${COMMIT_HASH}
+<b> Tác giả:</b> ${COMMIT_AUTHOR}
+<b> Nội dung:</b> ${COMMIT_MSG}
+<b>️ Thời gian chạy:</b> ${BUILD_DURATION}
+<b> Thời điểm:</b> ${BUILD_TIMESTAMP}"
 
                         echo "Đang gửi thông báo Telegram lỗi..."
 
