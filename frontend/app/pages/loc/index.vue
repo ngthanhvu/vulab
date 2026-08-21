@@ -2,9 +2,22 @@
 const input = ref('')
 const output = ref('')
 const count = ref(0)
+const loading = ref(true)
+const processing = ref(false)
+
+onMounted(() => {
+  const timer = setTimeout(() => { loading.value = false }, 500)
+  onUnmounted(() => clearTimeout(timer))
+})
 
 function filterData() {
-  if (!input.value.trim()) return
+  processing.value = true
+  if (!input.value.trim()) {
+    output.value = ''
+    count.value = 0
+    processing.value = false
+    return
+  }
 
   const lines = input.value.split(/\r?\n/)
 
@@ -18,6 +31,7 @@ function filterData() {
 
   output.value = result.join('\n')
   count.value = result.length
+  processing.value = false
 }
 
 function copyResult() {
@@ -38,14 +52,20 @@ function clearAll() {
 
       <!-- Header -->
       <div class="bg-[#ff6b6b] p-6 mb-6">
-        <h1 class="text-white text-2xl md:text-3xl font-bold flex items-center gap-3"
-          style="font-family: 'Plus Jakarta Sans', sans-serif;">
-          <LucideScissors :size="28" />
-          Lọc dữ liệu
-        </h1>
-        <p class="text-white/90 mt-2 text-sm" style="font-family: 'Plus Jakarta Sans', sans-serif;">
-          Giữ lại đúng 3 phần đầu của mỗi dòng phân cách bằng dấu |
-        </p>
+        <div v-if="loading" class="flex flex-col gap-3" aria-busy="true" aria-label="Đang tải">
+          <Skeleton width="200px" height="36px" rounded="lg" class="bg-white/30" />
+          <Skeleton width="min(100%, 320px)" height="18px" rounded="full" class="bg-white/30" />
+        </div>
+        <template v-else>
+          <h1 class="text-white text-2xl md:text-3xl font-bold flex items-center gap-3"
+            style="font-family: 'Plus Jakarta Sans', sans-serif;">
+            <LucideScissors :size="28" />
+            Lọc dữ liệu
+          </h1>
+          <p class="text-white/90 mt-2 text-sm" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+            Giữ lại đúng 3 phần đầu của mỗi dòng phân cách bằng dấu |
+          </p>
+        </template>
       </div>
 
       <!-- Input -->
@@ -93,7 +113,13 @@ function clearAll() {
           <LucideClipboardList :size="14" class="inline mr-1" />
           Kết quả
         </label>
-        <textarea v-model="output" readonly placeholder="Kết quả sẽ xuất hiện ở đây..."
+        <div v-if="processing" class="w-full h-64 p-4 border-2 border-[#dfe6e9] bg-white rounded-sm"
+          aria-busy="true" aria-label="Đang xử lý">
+          <div class="flex flex-col gap-3 h-full">
+            <Skeleton v-for="n in 8" :key="n" width="100%" height="14px" rounded="full" />
+          </div>
+        </div>
+          <textarea v-else v-model="output" readonly placeholder="Kết quả sẽ xuất hiện ở đây..."
           class="w-full h-64 p-4 border-2 border-[#dfe6e9] outline-none resize-none text-sm"
           style="font-family: 'JetBrains Mono', monospace; background: #fff;" />
       </div>

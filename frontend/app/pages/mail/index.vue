@@ -187,8 +187,21 @@ useHead({
     <div class="relative z-20 max-w-6xl mx-auto px-4 py-3 md:py-4 flex-1 w-full flex flex-col">
       <!-- Generate Section -->
       <div class="rounded-xl border-[3px] border-void bg-paper shadow-chunky p-3 md:p-4 mb-3 shrink-0">
-        <div v-if="!generated" class="flex items-center justify-center py-4">
-          <span class="loading loading-spinner loading-md"></span>
+        <div v-if="!generated" class="py-2" aria-busy="true" aria-label="Đang tạo địa chỉ email">
+          <div class="rounded-xl border-[3px] border-void bg-void p-3 shadow-chunky">
+            <div class="flex items-center gap-2 mb-2">
+              <Skeleton width="10px" height="10px" circle class="bg-white/20" />
+              <Skeleton width="10px" height="10px" circle class="bg-white/20" />
+              <Skeleton width="10px" height="10px" circle class="bg-white/20" />
+            </div>
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+              <Skeleton width="min(100%, 320px)" height="24px" rounded="lg" class="bg-white/20" />
+              <div class="flex items-center gap-2 w-full sm:w-auto">
+                <Skeleton width="100%" height="32px" rounded="lg" class="sm:w-24 bg-white/20" />
+                <Skeleton width="100%" height="32px" rounded="lg" class="sm:w-24 bg-white/20" />
+              </div>
+            </div>
+          </div>
         </div>
 
         <div v-else>
@@ -218,7 +231,15 @@ useHead({
       </div>
 
       <!-- Search Inbox -->
-      <div class="rounded-xl border-[3px] border-void bg-paper shadow-chunky p-3 md:p-4 mb-3 shrink-0">
+      <div v-if="!generated" class="rounded-xl border-[3px] border-void bg-paper shadow-chunky p-3 md:p-4 mb-3 shrink-0" aria-busy="true">
+        <Skeleton width="120px" height="14px" rounded="full" class="mb-2" />
+        <div class="flex flex-col md:flex-row gap-2">
+          <Skeleton width="100%" height="40px" rounded="lg" />
+          <Skeleton width="100%" height="40px" rounded="lg" class="md:w-32" />
+        </div>
+      </div>
+
+      <div v-else class="rounded-xl border-[3px] border-void bg-paper shadow-chunky p-3 md:p-4 mb-3 shrink-0">
         <label class="font-mono text-[11px] tracking-widest uppercase font-bold block mb-1.5">TÌM LẠI INBOX</label>
         <form class="flex flex-col md:flex-row gap-2" @submit.prevent="goToInbox">
           <input v-model="searchAddress" type="text" placeholder="nhập địa chỉ email..."
@@ -310,6 +331,7 @@ useHead({
           </div>
         </div>
       </div>
+      <SkeletonInbox v-else class="shrink-0" aria-busy="true" aria-label="Đang tải inbox" />
     </div>
 
     <!-- Footer -->

@@ -9,6 +9,17 @@ useHead({
     ]
 })
 
+const loading = ref(true)
+const showContent = ref(false)
+
+onMounted(() => {
+    const timer = setTimeout(() => {
+        loading.value = false
+        requestAnimationFrame(() => { showContent.value = true })
+    }, 700)
+    onUnmounted(() => clearTimeout(timer))
+})
+
 const stickers = [
     { label: 'HTML', top: '12%', left: '6%', rot: -14, bg: '#00A8E8' },
     { label: 'CSS', top: '20%', left: '86%', rot: 10, bg: '#FF6B35' },
@@ -54,61 +65,94 @@ const tasks = [
         </div>
 
         <main class="stage">
-            <!-- spinning seal -->
-            <div class="seal" aria-hidden="true">
-                <svg viewBox="0 0 200 200" class="seal__ring">
-                    <defs>
-                        <path id="sealCircle" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0" />
-                    </defs>
-                    <text>
-                        <textPath href="#sealCircle" startOffset="0%">
-                            • ĐANG PHÁT TRIỂN • ĐANG PHÁT TRIỂN • ĐANG PHÁT TRIỂN
-                        </textPath>
-                    </text>
-                </svg>
-                <div class="seal__core">
-                    <span class="seal__core-icon">🛠</span>
+            <!-- Skeleton loading -->
+            <div v-if="loading" class="skeleton-stage" aria-label="Đang tải trang" aria-busy="true">
+                <div class="seal-skeleton" aria-hidden="true">
+                    <Skeleton circle width="120px" height="120px" />
+                </div>
+                <Skeleton width="260px" height="22px" rounded="full" class="mb-6" />
+                <div class="skeleton-headline">
+                    <Skeleton width="min(100%, 320px)" height="clamp(1.7rem, 6.5vh, 4.2rem)" rounded="lg" />
+                    <Skeleton width="min(100%, 260px)" height="clamp(1.7rem, 6.5vh, 4.2rem)" rounded="lg" />
+                    <Skeleton width="min(100%, 360px)" height="clamp(1.7rem, 6.5vh, 4.2rem)" rounded="lg" />
+                </div>
+                <Skeleton width="min(100%, 460px)" height="60px" rounded="lg" class="my-4" />
+                <div class="skeleton-panel">
+                    <div class="skeleton-panel__header">
+                        <Skeleton width="180px" height="18px" rounded="full" />
+                        <Skeleton width="52px" height="24px" rounded="full" />
+                    </div>
+                    <Skeleton width="100%" height="12px" rounded="full" class="mb-4" />
+                    <div class="skeleton-tasks">
+                        <Skeleton v-for="n in 4" :key="n" width="100%" height="20px" rounded="sm" />
+                    </div>
+                </div>
+                <div class="skeleton-notify">
+                    <Skeleton width="160px" height="14px" rounded="full" class="mb-2" />
+                    <Skeleton width="100%" height="52px" rounded="lg" />
                 </div>
             </div>
 
-            <p class="eyebrow">MỘT SẢN PHẨM ĐANG THÀNH HÌNH</p>
+            <!-- Content -->
+            <Transition name="fade-stage">
+                <div v-if="!loading" class="content" :class="{ 'content--visible': showContent }">
+                    <!-- spinning seal -->
+                    <div class="seal" aria-hidden="true">
+                        <svg viewBox="0 0 200 200" class="seal__ring">
+                            <defs>
+                                <path id="sealCircle" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0" />
+                            </defs>
+                            <text>
+                                <textPath href="#sealCircle" startOffset="0%">
+                                    • ĐANG PHÁT TRIỂN • ĐANG PHÁT TRIỂN • ĐANG PHÁT TRIỂN
+                                </textPath>
+                            </text>
+                        </svg>
+                        <div class="seal__core">
+                            <span class="seal__core-icon">🛠</span>
+                        </div>
+                    </div>
 
-            <h1 class="headline">
-                <span class="headline__line headline__line--a">TRANG WEB</span>
-                <span class="headline__line headline__line--b">NÀY ĐANG</span>
-                <span class="headline__line headline__line--c">LỚN LÊN<span class="headline__spark">*</span></span>
-            </h1>
+                    <p class="eyebrow">MỘT SẢN PHẨM ĐANG THÀNH HÌNH</p>
 
-            <p class="lede">
-                Đội ngũ của chúng tôi đang hàn, sơn, gõ phím và đổ thêm cà phê để
-                hoàn thiện từng góc nhỏ. Ghé lại sau — mọi thứ sẽ đẹp hơn, nhanh hơn
-                và (hy vọng) ít lỗi hơn.
-            </p>
+                    <h1 class="headline">
+                        <span class="headline__line headline__line--a">TRANG WEB</span>
+                        <span class="headline__line headline__line--b">NÀY ĐANG</span>
+                        <span class="headline__line headline__line--c">LỚN LÊN<span class="headline__spark">*</span></span>
+                    </h1>
 
-            <div class="panel">
-                <div class="panel__header">
-                    <span class="panel__title">TIẾN ĐỘ CÔNG TRƯỜNG</span>
-                    <span class="panel__badge">60%</span>
+                    <p class="lede">
+                        Đội ngũ của chúng tôi đang hàn, sơn, gõ phím và đổ thêm cà phê để
+                        hoàn thiện từng góc nhỏ. Ghé lại sau — mọi thứ sẽ đẹp hơn, nhanh hơn
+                        và (hy vọng) ít lỗi hơn.
+                    </p>
+
+                    <div class="panel">
+                        <div class="panel__header">
+                            <span class="panel__title">TIẾN ĐỘ CÔNG TRƯỜNG</span>
+                            <span class="panel__badge">60%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress__fill" style="width: 60%" />
+                        </div>
+
+                        <ul class="tasks">
+                            <li v-for="t in tasks" :key="t.name" class="tasks__item" :class="{ 'tasks__item--done': t.done }">
+                                <span class="tasks__box">{{ t.done ? '✓' : '' }}</span>
+                                <span>{{ t.name }}</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <form class="notify" @submit.prevent>
+                        <label class="notify__label" for="email">BÁO CHO TÔI KHI XONG</label>
+                        <div class="notify__row">
+                            <input id="email" type="email" placeholder="ban@vidu.com" class="notify__input" />
+                            <button type="submit" class="notify__button">Đăng ký</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="progress">
-                    <div class="progress__fill" style="width: 60%" />
-                </div>
-
-                <ul class="tasks">
-                    <li v-for="t in tasks" :key="t.name" class="tasks__item" :class="{ 'tasks__item--done': t.done }">
-                        <span class="tasks__box">{{ t.done ? '✓' : '' }}</span>
-                        <span>{{ t.name }}</span>
-                    </li>
-                </ul>
-            </div>
-
-            <form class="notify" @submit.prevent>
-                <label class="notify__label" for="email">BÁO CHO TÔI KHI XONG</label>
-                <div class="notify__row">
-                    <input id="email" type="email" placeholder="ban@vidu.com" class="notify__input" />
-                    <button type="submit" class="notify__button">Đăng ký</button>
-                </div>
-            </form>
+            </Transition>
         </main>
 
         <!-- bottom marquee -->
@@ -647,6 +691,99 @@ body,
 
     .panel {
         display: none;
+    }
+}
+
+/* skeleton */
+.skeleton-stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+    text-align: center;
+    color: var(--ink);
+}
+
+.seal-skeleton {
+    width: clamp(90px, 15vh, 150px);
+    height: clamp(90px, 15vh, 150px);
+    margin-bottom: clamp(0.6rem, 1.8vh, 1.75rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.skeleton-headline {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(0.4rem, 1vh, 0.7rem);
+    width: 100%;
+    margin-bottom: clamp(0.6rem, 1.6vh, 1.4rem);
+}
+
+.skeleton-panel {
+    width: 100%;
+    max-width: 480px;
+    background: white;
+    border: 3px solid var(--ink);
+    border-radius: 18px;
+    box-shadow: 6px 6px 0 var(--ink);
+    padding: clamp(0.8rem, 1.8vh, 1.4rem) 1.4rem clamp(0.9rem, 2vh, 1.6rem);
+    margin-bottom: clamp(0.8rem, 2vh, 2.2rem);
+    text-align: left;
+}
+
+.skeleton-panel__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: clamp(0.5rem, 1vh, 0.85rem);
+}
+
+.skeleton-tasks {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.35rem, 0.9vh, 0.55rem);
+}
+
+.skeleton-notify {
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+}
+
+.content--visible {
+    opacity: 1;
+}
+
+.fade-stage-enter-active,
+.fade-stage-leave-active {
+    transition: opacity 0.35s ease;
+}
+
+.fade-stage-enter-from,
+.fade-stage-leave-to {
+    opacity: 0;
+}
+
+@media (max-width: 480px) {
+    .skeleton-panel,
+    .skeleton-notify {
+        max-width: 100%;
     }
 }
 </style>
