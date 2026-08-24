@@ -43,7 +43,7 @@ export async function saveEmails(emails: Email[]): Promise<void> {
   const connection = await db.getConnection();
   try {
     for (const email of emails) {
-      await connection.execute<ResultSetHeader>(
+      await connection.query<ResultSetHeader>(
         `INSERT INTO emails (uid, subject, \`from\`, \`to\`, date, text, html, seen)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?)
          ON DUPLICATE KEY UPDATE

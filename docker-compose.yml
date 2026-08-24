@@ -40,6 +40,8 @@ services:
       MYSQL_PASSWORD: ${DB_PASS:-vuthanh123}
     expose:
       - "3306"
+    ports:
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
 
