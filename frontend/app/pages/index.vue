@@ -35,8 +35,8 @@
                     <input type="email" placeholder="Email của bạn" required
                         class="w-full rounded-lg border border-neutral-200 bg-white py-2.5 pl-4 pr-44 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-neutral-400 focus:outline-none" />
                     <button type="submit"
-                        class="absolute right-1 top-1/2 -translate-y-1/2 inline-flex items-center justify-center rounded-md bg-neutral-900 px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-neutral-700 focus:outline-none">
-                        Gửi
+                        class="absolute right-1 top-1/2 -translate-y-1/2 inline-flex items-center justify-center rounded-md bg-neutral-900 px-3 py-1.5 sm:px-4 sm:py-2 text-sm font-medium text-white transition-colors hover:bg-neutral-700 focus:outline-none">
+                        <LucideSend class="h-4 w-4" />
                     </button>
                 </div>
             </form>

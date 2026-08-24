@@ -176,7 +176,7 @@ useHead({
             ↻ refresh
           </button>
           <button
-            class="btn btn-sm md:btn-xs font-display font-bold border-[2px] border-void bg-volt text-void hover:-translate-y-0.5 hover:shadow-chunky-volt transition-all shadow-chunky-sm px-3 py-1"
+            class="btn btn-sm md:btn-xs font-display font-bold border-2 border-void bg-volt text-void hover:-translate-y-0.5 hover:shadow-chunky-volt transition-all shadow-chunky-sm px-3 py-1"
             @click="generateEmail">
             + MỚI
           </button>
@@ -216,11 +216,11 @@ useHead({
                 class="font-mono text-volt text-sm md:text-lg font-bold break-all w-full sm:w-auto">{{ emailAddress }}</code>
               <div class="flex items-center gap-2 w-full sm:w-auto">
                 <NuxtLink :to="`/mail/${encodeURIComponent(emailAddress)}`"
-                  class="btn btn-sm md:btn-xs border-[2px] border-volt bg-transparent text-volt font-mono font-bold hover:bg-volt hover:text-void transition-all shadow-chunky-sm flex-1 sm:flex-initial text-center">
+                  class="btn btn-sm md:btn-xs border-2 border-volt bg-transparent text-volt font-mono font-bold hover:bg-volt hover:text-void transition-all shadow-chunky-sm flex-1 sm:flex-initial text-center">
                   MỞ RIÊNG
                 </NuxtLink>
                 <button
-                  class="btn btn-sm md:btn-xs border-[2px] border-volt bg-transparent text-volt font-mono font-bold hover:bg-volt hover:text-void transition-all shadow-chunky-sm flex-1 sm:flex-initial"
+                  class="btn btn-sm md:btn-xs border-2 border-volt bg-transparent text-volt font-mono font-bold hover:bg-volt hover:text-void transition-all shadow-chunky-sm flex-1 sm:flex-initial"
                   @click="copyEmail">
                   {{ copied ? '✓ COPIED' : 'COPY' }}
                 </button>
@@ -231,7 +231,8 @@ useHead({
       </div>
 
       <!-- Search Inbox -->
-      <div v-if="!generated" class="rounded-xl border-[3px] border-void bg-paper shadow-chunky p-3 md:p-4 mb-3 shrink-0" aria-busy="true">
+      <div v-if="!generated" class="rounded-xl border-[3px] border-void bg-paper shadow-chunky p-3 md:p-4 mb-3 shrink-0"
+        aria-busy="true">
         <Skeleton width="120px" height="14px" rounded="full" class="mb-2" />
         <div class="flex flex-col md:flex-row gap-2">
           <Skeleton width="100%" height="40px" rounded="lg" />
@@ -243,18 +244,18 @@ useHead({
         <label class="font-mono text-[11px] tracking-widest uppercase font-bold block mb-1.5">TÌM LẠI INBOX</label>
         <form class="flex flex-col md:flex-row gap-2" @submit.prevent="goToInbox">
           <input v-model="searchAddress" type="text" placeholder="nhập địa chỉ email..."
-            class="input input-md md:input-sm input-bordered flex-1 border-[2px] border-void font-mono text-xs h-14 md:h-8 w-full max-md:py-[5px] max-md:px-[10px]" />
+            class="input input-md md:input-sm input-bordered flex-1 border-2 border-void font-mono text-xs h-14 md:h-8 w-full max-md:py-1.25 max-md:px-2.5" />
           <button type="submit"
-            class="btn btn-sm border-[2px] border-void bg-volt text-void font-bold font-display hover:-translate-y-0.5 hover:shadow-chunky-volt transition-all shadow-chunky-sm w-full md:w-auto">
+            class="btn btn-sm border-2 border-void bg-volt text-void font-bold font-display hover:-translate-y-0.5 hover:shadow-chunky-volt transition-all shadow-chunky-sm w-full md:w-auto">
             MỞ INBOX
           </button>
         </form>
       </div>
 
       <!-- Inbox -->
-      <div v-if="generated" class="flex flex-col md:flex-row gap-3 mb-3 flex-1 min-h-[380px] md:min-h-[420px]">
+      <div v-if="generated" class="flex flex-col md:flex-row gap-3 mb-3 flex-1 min-h-95 md:min-h-105">
         <!-- Email List -->
-        <div class="w-full md:w-72 shrink-0 h-[240px] sm:h-[280px] md:h-auto flex flex-col min-h-0">
+        <div class="w-full md:w-72 shrink-0 h-60 sm:h-70 md:h-auto flex flex-col min-h-0">
           <div class="rounded-xl border-[3px] border-void bg-paper shadow-chunky overflow-hidden flex flex-col h-full">
             <div
               class="border-b-[3px] border-void px-3 py-1.5 font-mono text-[11px] tracking-widest uppercase text-void/50 bg-base-200 shrink-0">
@@ -270,7 +271,7 @@ useHead({
               <p class="font-mono text-xs tracking-widest uppercase text-center">Đang chờ mail...</p>
             </div>
 
-            <div v-else class="divide-y-[2px] divide-void flex-1 overflow-y-auto hide-scrollbar min-h-0">
+            <div v-else class="divide-y-2 divide-void flex-1 overflow-y-auto hide-scrollbar min-h-0">
               <div v-for="(email, i) in emails" :key="email.uid"
                 class="cursor-pointer px-3 py-3 sm:py-2.5 hover:bg-volt/10 transition-colors" :class="{
                   'bg-volt/15 border-l-[3px] border-l-volt': selected === email.uid,
@@ -280,7 +281,7 @@ useHead({
                 <div class="flex items-start justify-between gap-1">
                   <span class="text-xs font-bold truncate flex-1 font-body">{{ email.from }}</span>
                   <span class="font-mono text-[10px] text-void/40 whitespace-nowrap ml-1">{{ formatTime(email.date)
-                    }}</span>
+                  }}</span>
                 </div>
                 <div class="text-xs mt-0.5 truncate font-body" :class="{ 'font-bold': !email.seen }">
                   {{ email.subject }}
@@ -291,7 +292,7 @@ useHead({
         </div>
 
         <!-- Email Detail -->
-        <div class="flex-1 h-[360px] sm:h-[420px] md:h-auto min-h-0 flex flex-col">
+        <div class="flex-1 h-90 sm:h-105 md:h-auto min-h-0 flex flex-col">
           <div class="rounded-xl border-[3px] border-void bg-paper shadow-chunky overflow-hidden flex flex-col h-full">
             <div v-if="!selectedEmail" class="flex flex-col items-center justify-center h-full py-12 text-void/20">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mb-3" fill="none" viewBox="0 0 24 24"
@@ -306,7 +307,7 @@ useHead({
               <div class="p-3 md:p-4 border-b-[3px] border-void shrink-0 bg-paper z-10">
                 <div class="flex items-center gap-2 mb-1.5">
                   <span
-                    class="inline-flex items-center rounded-lg border-[2px] border-void px-2 py-0.5 font-mono text-[10px] tracking-widest uppercase font-bold"
+                    class="inline-flex items-center rounded-lg border-2 border-void px-2 py-0.5 font-mono text-[10px] tracking-widest uppercase font-bold"
                     :class="selectedEmail.seen ? 'bg-base-200 text-void/50' : 'bg-volt text-void'">
                     {{ selectedEmail.seen ? 'ĐÃ ĐỌC' : 'MỚI' }}
                   </span>

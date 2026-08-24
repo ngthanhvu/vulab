@@ -4,12 +4,8 @@
         <main class="flex-1 flex flex-col items-center justify-center px-6 text-center">
             <!-- Nhãn nhỏ -->
             <span
-                class="mb-8 inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white px-4 py-1.5 text-xs font-medium tracking-wide text-neutral-500">
-                <span class="relative flex h-2 w-2">
-                    <span
-                        class="absolute inline-flex h-full w-full animate-ping rounded-full bg-neutral-400 opacity-75"></span>
-                    <span class="relative inline-flex h-2 w-2 rounded-full bg-neutral-500"></span>
-                </span>
+                class="mb-8 inline-flex items-center gap-2 rounded-full bg-red-50 px-3 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">
+                <span class="h-1.5 w-1.5 rounded-full bg-red-500"></span>
                 Lỗi {{ statusCode }}
             </span>
             <!-- Mã lỗi to -->
@@ -26,20 +22,16 @@
             </p>
             <!-- Chi tiết lỗi (tuỳ chọn, hữu ích khi dev) -->
             <p v-if="errorMessage && isDev"
-                class="mt-3 max-w-lg rounded-lg bg-neutral-100 px-4 py-2 text-xs text-neutral-400 font-mono break-words">
+                class="mt-3 max-w-lg rounded-lg bg-neutral-100 px-4 py-2 text-xs text-neutral-400 font-mono wrap-break-word border border-gray-200">
                 {{ errorMessage }}
             </p>
             <!-- Nút hành động -->
             <div class="mt-10 flex flex-col sm:flex-row items-center gap-3">
                 <button type="button"
-                    class="inline-flex items-center justify-center rounded-lg bg-neutral-900 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-neutral-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2"
+                    class="inline-flex items-center justify-center gap-2 rounded-lg bg-neutral-900 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-neutral-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2"
                     @click="handleGoHome">
+                    <LucideHome class="h-4 w-4" />
                     Về trang chủ
-                </button>
-                <button type="button"
-                    class="inline-flex items-center justify-center rounded-lg border border-neutral-200 bg-white px-5 py-2.5 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2"
-                    @click="handleRetry">
-                    Thử lại
                 </button>
             </div>
         </main>
@@ -90,10 +82,5 @@ useHead({
 function handleGoHome() {
     clearError({ redirect: "/" })
 }
-
-function handleRetry() {
-    clearError()
-}
-
 const currentYear = new Date().getFullYear()
 </script>
