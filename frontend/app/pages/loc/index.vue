@@ -2,13 +2,7 @@
 const input = ref('')
 const output = ref('')
 const count = ref(0)
-const loading = ref(true)
 const processing = ref(false)
-
-onMounted(() => {
-  const timer = setTimeout(() => { loading.value = false }, 500)
-  onUnmounted(() => clearTimeout(timer))
-})
 
 function filterData() {
   processing.value = true

@@ -1,6 +1,6 @@
-import type { Email } from '../types/email.js'
-import { db } from '../config/database.js'
-import { RowDataPacket, ResultSetHeader } from 'mysql2/promise'
+import { db } from '../config/database';
+import type { Email } from '../types/email';
+import { RowDataPacket, ResultSetHeader } from 'mysql2/promise';
 
 interface EmailRow extends Email, RowDataPacket {}
 
@@ -10,9 +10,9 @@ export async function getEmails(limit = 20): Promise<Email[]> {
      FROM emails
      ORDER BY date DESC
      LIMIT ?`,
-    [limit]
-  )
-  return rows.map(rowToEmail)
+    [limit],
+  );
+  return rows.map(rowToEmail);
 }
 
 export async function getEmailsByRecipient(address: string): Promise<Email[]> {
@@ -21,9 +21,9 @@ export async function getEmailsByRecipient(address: string): Promise<Email[]> {
      FROM emails
      WHERE \`to\` = ?
      ORDER BY date DESC`,
-    [address.toLowerCase()]
-  )
-  return rows.map(rowToEmail)
+    [address.toLowerCase()],
+  );
+  return rows.map(rowToEmail);
 }
 
 export async function getEmailByUid(uid: number): Promise<Email | null> {
@@ -31,16 +31,16 @@ export async function getEmailByUid(uid: number): Promise<Email | null> {
     `SELECT uid, subject, \`from\`, \`to\`, date, text, html, seen
      FROM emails
      WHERE uid = ?`,
-    [uid]
-  )
-  if (rows.length === 0) return null
-  return rowToEmail(rows[0])
+    [uid],
+  );
+  if (rows.length === 0) return null;
+  return rowToEmail(rows[0]);
 }
 
 export async function saveEmails(emails: Email[]): Promise<void> {
-  if (emails.length === 0) return
+  if (emails.length === 0) return;
 
-  const connection = await db.getConnection()
+  const connection = await db.getConnection();
   try {
     for (const email of emails) {
       await connection.execute<ResultSetHeader>(
@@ -63,24 +63,24 @@ export async function saveEmails(emails: Email[]): Promise<void> {
           email.text,
           email.html,
           email.seen,
-        ]
-      )
+        ],
+      );
     }
   } finally {
-    connection.release()
+    connection.release();
   }
 }
 
 export async function deleteOldEmails(hours: number): Promise<number> {
   const [result] = await db.execute<ResultSetHeader>(
     `DELETE FROM emails WHERE created_at < DATE_SUB(NOW(), INTERVAL ? HOUR)`,
-    [hours]
-  )
-  return result.affectedRows ?? 0
+    [hours],
+  );
+  return result.affectedRows ?? 0;
 }
 
 export async function setEmails(newEmails: Email[]): Promise<void> {
-  await saveEmails(newEmails)
+  await saveEmails(newEmails);
 }
 
 function rowToEmail(row: EmailRow): Email {
@@ -93,5 +93,5 @@ function rowToEmail(row: EmailRow): Email {
     text: row.text,
     html: row.html,
     seen: Boolean(row.seen),
-  }
+  };
 }

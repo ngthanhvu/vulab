@@ -84,7 +84,7 @@ pipeline {
                         MESSAGE="<b>✅ Deploy thành công</b>
 - <b>Job:</b> ${JOB_NAME}
 - <b>Build:</b> #${BUILD_NUMBER}
-- <b>URL:</b> <a href='${BUILD_URL}'>click here!!</a>
+- <b>URL:</b> <a href='${BUILD_URL}'>Open »</a>
 - <b>Môi trường:</b> ${DEPLOY_ENV}
 - <b>Branch:</b> ${BRANCH_NAME_SAFE}
 - <b>Commit:</b> ${COMMIT_HASH}
@@ -143,7 +143,7 @@ pipeline {
                         MESSAGE="<b>❌ Deploy thất bại</b>
 - <b>Job:</b> ${JOB_NAME}
 - <b>Build:</b> #${BUILD_NUMBER}
-- <b>URL:</b> <a href='${BUILD_URL}'>click here!!</a>
+- <b>URL:</b> <a href='${BUILD_URL}'>Open »</a>
 - <b>Môi trường:</b> ${DEPLOY_ENV}
 - <b>Branch:</b> ${BRANCH_NAME_SAFE}
 - <b>Commit:</b> ${COMMIT_HASH}

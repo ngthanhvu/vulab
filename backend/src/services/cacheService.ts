@@ -1,15 +1,19 @@
-import { redis } from '../config/database.js'
+import { Injectable } from '@nestjs/common';
+import { redis } from '../config/database';
 
-export async function connectCache(): Promise<void> {
-  await redis.connect()
-  console.log('Redis connected')
-}
+@Injectable()
+export class CacheService {
+  async connect(): Promise<void> {
+    await redis.connect();
+    console.log('Redis connected');
+  }
 
-export async function checkCache(): Promise<boolean> {
-  try {
-    await redis.ping()
-    return true
-  } catch {
-    return false
+  async check(): Promise<boolean> {
+    try {
+      await redis.ping();
+      return true;
+    } catch {
+      return false;
+    }
   }
 }

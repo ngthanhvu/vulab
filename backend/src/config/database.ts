@@ -1,6 +1,6 @@
-import mysql from 'mysql2/promise'
-import { createClient } from 'redis'
-import { env } from './env.js'
+import mysql from 'mysql2/promise';
+import { createClient } from 'redis';
+import { env } from './env';
 
 export const db = mysql.createPool({
   host: env.dbHost,
@@ -11,15 +11,15 @@ export const db = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
-})
+});
 
 export const redis = createClient({
   socket: {
     host: env.redisHost,
     port: env.redisPort,
   },
-})
+});
 
-redis.on('error', (err) => {
-  console.error('Redis error:', err.message)
-})
+redis.on('error', (err: Error) => {
+  console.error('Redis error:', err.message);
+});

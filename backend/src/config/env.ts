@@ -1,10 +1,10 @@
 function getEnv(name: string, fallback?: string): string {
-  const value = process.env[name]
+  const value = process.env[name];
   if (value === undefined || value === '') {
-    if (fallback !== undefined) return fallback
-    throw new Error(`Missing required environment variable: ${name}`)
+    if (fallback !== undefined) return fallback;
+    throw new Error(`Missing required environment variable: ${name}`);
   }
-  return value
+  return value;
 }
 
 export const env = {
@@ -21,4 +21,4 @@ export const env = {
   dbName: getEnv('DB_NAME', 'vuthanh'),
   redisHost: getEnv('REDIS_HOST', 'redis'),
   redisPort: Number(getEnv('REDIS_PORT', '6379')),
-}
+};

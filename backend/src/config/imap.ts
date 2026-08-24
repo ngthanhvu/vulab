@@ -1,5 +1,5 @@
-import type { ImapFlowOptions } from 'imapflow'
-import { env } from './env.js'
+import type { ImapFlowOptions } from 'imapflow';
+import { env } from './env';
 
 export const imapConfig: ImapFlowOptions = {
   host: env.imapHost,
@@ -13,4 +13,4 @@ export const imapConfig: ImapFlowOptions = {
   tls: {
     rejectUnauthorized: false,
   },
-}
+};
