@@ -28,6 +28,7 @@ pipeline {
         stage('Prepare .env') {
             steps {
                 withCredentials([file(credentialsId: 'vuthanh-dotenv', variable: 'ENV_FILE')]) {
+                    sh 'chmod -R u+w .'
                     sh 'cp "$ENV_FILE" .env'
                 }
                 echo 'Đã copy .env từ Jenkins Credentials.'
