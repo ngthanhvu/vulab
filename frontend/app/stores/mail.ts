@@ -36,7 +36,11 @@ export const useMailStore = defineStore('mail', {
         this.domains = list
         if (list.length > 0) {
           this.selectedDomain = list[Math.floor(Math.random() * list.length)]
-          await this.generateEmail()
+          if (!this.emailAddress) {
+            await this.generateEmail()
+          } else {
+            await this.fetchInbox()
+          }
         }
       } catch (e) {
         console.error(e)

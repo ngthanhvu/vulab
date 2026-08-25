@@ -4,6 +4,8 @@
     themes: custom --default;
 }
 
+@plugin "@tailwindcss/typography";
+
 @theme {
   --color-void: #14092B;
   --color-paper: #FFF9EF;
