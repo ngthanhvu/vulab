@@ -20,6 +20,10 @@ RUN npm ci --omit=dev
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/src/database/migrations ./dist/database/migrations
 
+COPY entrypoint.sh ./entrypoint.sh
+RUN chmod +x entrypoint.sh
+
 EXPOSE 3001
 
+ENTRYPOINT ["/app/entrypoint.sh"]
 CMD ["node", "dist/main"]
