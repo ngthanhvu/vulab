@@ -1,4 +1,5 @@
 import fs from 'fs/promises'
+import { existsSync } from 'fs'
 import path from 'path'
 import type { Connection, Pool, RowDataPacket } from 'mysql2/promise'
 
@@ -16,11 +17,20 @@ interface MigrationRow extends RowDataPacket {
   name: string
 }
 
+function resolveMigrationsDir(): string {
+  const distPath = path.join(process.cwd(), 'dist', 'database', 'migrations')
+  const srcPath = path.join(process.cwd(), 'src', 'database', 'migrations')
+  if (existsSync(distPath)) {
+    return distPath
+  }
+  return srcPath
+}
+
 export class MigrationRunner {
   private readonly migrationsDir: string
 
   constructor(private readonly db: Pool) {
-    this.migrationsDir = path.join(process.cwd(), 'src', 'database', 'migrations')
+    this.migrationsDir = resolveMigrationsDir()
   }
 
   async migrate(): Promise<void> {

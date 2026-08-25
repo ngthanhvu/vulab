@@ -1,5 +1,6 @@
 import { db } from '../config/database';
 import { RowDataPacket, ResultSetHeader } from 'mysql2/promise';
+import { generateSlug } from '../utils/slug';
 
 export interface Note {
   id: number;
@@ -17,15 +18,6 @@ interface NoteRow extends RowDataPacket {
   content: string;
   created_at: Date;
   updated_at: Date;
-}
-
-function generateSlug(length = 10): string {
-  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-  let result = '';
-  for (let i = 0; i < length; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return result;
 }
 
 function rowToNote(row: NoteRow): Note {

@@ -25,6 +25,27 @@ pipeline {
             }
         }
 
+        stage('Test') {
+            parallel {
+                stage('Backend tests') {
+                    steps {
+                        dir('backend') {
+                            sh 'npm ci'
+                            sh 'npm test'
+                        }
+                    }
+                }
+                stage('Frontend tests') {
+                    steps {
+                        dir('frontend') {
+                            sh 'npm ci'
+                            sh 'npm test'
+                        }
+                    }
+                }
+            }
+        }
+
         stage('Prepare .env') {
             steps {
                 withCredentials([file(credentialsId: 'vuthanh-dotenv', variable: 'ENV_FILE')]) {
