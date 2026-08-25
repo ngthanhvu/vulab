@@ -40,9 +40,17 @@ Khi xây dựng hoặc mở rộng chc năng mới trên frontend, tuân thủ c
 - Helpers dùng chung đặt trong `app/utils/`.
 - Ví dụ: `app/utils/date.ts` cho format ngày giờ.
 
-### 6. Quy tắc khi thêm chức năng mới
+### 6. Quy tắc khi thêm chc năng mới
 
 - Nếu feature chưa có thư mục, tạo `components/<feature>/`, `composables/<feature>/`, và store nếu cần.
 - Luôn tách:
   - Page → component → composable → store.
 - Không viết lại logic đã có trong composable.
+- **Bắt buộc tạo file test cho mỗi tính năng mới**:
+  - Backend (NestJS + Jest): file `test/unit/<feature>/<name>.spec.ts`.
+    - Ưu tiên test: service, controller, pure utilities.
+    - Mock các dependency bên ngoài (database, redis, IMAP, external API).
+  - Frontend (Nuxt 4 + Vitest): file `tests/<layer>/<feature>/<name>.spec.ts`.
+    - u tiên test: composables API, stores (Pinia), utilities.
+    - Sử dụng `vi.fn()` để mock `fetch` và các dependency.
+  - Mỗi file logic nghiệp vụ (service, composable, store, utility) nên có test đi kèm.

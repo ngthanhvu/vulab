@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { useMailApi } from '~/composables/mail/useMailApi'
+import { useMailClipboard } from '~/composables/mail/useMailClipboard'
 import type { Email } from '~/composables/mail/useMailApi'
 
 export { type Email } from '~/composables/mail/useMailApi'

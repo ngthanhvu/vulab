@@ -1,3 +1,5 @@
+import { ref, onUnmounted } from 'vue'
+
 export function useMailClipboard() {
   const copied = ref(false)
   let timeout: ReturnType<typeof setTimeout> | null = null

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { generateSlug } from './slug'
+import { generateSlug } from '~/utils/slug'
 
 describe('generateSlug', () => {
   it('should generate a slug of the requested length', () => {
