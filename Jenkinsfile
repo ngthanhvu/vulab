@@ -29,18 +29,12 @@ pipeline {
             parallel {
                 stage('Backend tests') {
                     steps {
-                        dir('backend') {
-                            sh 'npm ci'
-                            sh 'npm test'
-                        }
+                        sh 'docker run --rm -v "$PWD/backend:/app" -w /app node:22-alpine sh -c "npm ci && npm test"'
                     }
                 }
                 stage('Frontend tests') {
                     steps {
-                        dir('frontend') {
-                            sh 'npm ci'
-                            sh 'npm test'
-                        }
+                        sh 'docker run --rm -v "$PWD/frontend:/app" -w /app node:22-alpine sh -c "npm ci && npm test"'
                     }
                 }
             }
