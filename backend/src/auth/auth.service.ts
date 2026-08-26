@@ -1,5 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { findUserByUsername } from '../models/userStore';
+import { comparePassword } from '../utils/password';
 
 interface LoginPayload {
   username: string;
@@ -19,7 +20,12 @@ export class AuthService {
     const { username, password } = payload;
 
     const user = await findUserByUsername(username);
-    if (!user || user.password !== password) {
+    if (!user) {
+      throw new UnauthorizedException('Tên đăng nhập hoặc mật khẩu không đúng');
+    }
+
+    const isMatch = await comparePassword(password, user.password);
+    if (!isMatch) {
       throw new UnauthorizedException('Tên đăng nhập hoặc mật khẩu không đúng');
     }
 

@@ -1,4 +1,5 @@
 import { UnauthorizedException } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 import { AuthService } from '../../../src/auth/auth.service';
 import * as userStore from '../../../src/models/userStore';
 
@@ -28,9 +29,10 @@ describe('AuthService', () => {
 
   describe('login', () => {
     it('should return token and user on valid credentials', async () => {
+      const hashedPassword = await bcrypt.hash('admin123', 10);
       jest
         .spyOn(userStore, 'findUserByUsername')
-        .mockResolvedValueOnce(mockAdminUser('admin123'));
+        .mockResolvedValueOnce(mockAdminUser(hashedPassword));
 
       const result = await service.login({ username: 'admin', password: 'admin123' });
 
@@ -49,9 +51,10 @@ describe('AuthService', () => {
 
   describe('validateToken', () => {
     it('should return true for a valid token', async () => {
+      const hashedPassword = await bcrypt.hash('admin123', 10);
       jest
         .spyOn(userStore, 'findUserByUsername')
-        .mockResolvedValueOnce(mockAdminUser('admin123'));
+        .mockResolvedValueOnce(mockAdminUser(hashedPassword));
 
       const { token } = await service.login({ username: 'admin', password: 'admin123' });
       expect(service.validateToken(token, 'admin')).toBe(true);

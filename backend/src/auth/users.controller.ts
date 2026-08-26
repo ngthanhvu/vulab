@@ -15,6 +15,7 @@ import {
   updateUser,
   deleteUser,
 } from '../models/userStore';
+import { hashPassword } from '../utils/password';
 
 interface CreateUserBody {
   username: string;
@@ -43,7 +44,8 @@ export class UsersController {
       throw new BadRequestException('Username và password là bắt buộc');
     }
 
-    const user = await createUser(username, password, role);
+    const hashedPassword = await hashPassword(password);
+    const user = await createUser(username, hashedPassword, role);
     return user;
   }
 
@@ -52,7 +54,11 @@ export class UsersController {
     @Param('id', ParseIntPipe) id: number,
     @Body() body: UpdateUserBody,
   ) {
-    const user = await updateUser(id, body);
+    const updates = { ...body };
+    if (updates.password) {
+      updates.password = await hashPassword(updates.password);
+    }
+    const user = await updateUser(id, updates);
     return user;
   }
 

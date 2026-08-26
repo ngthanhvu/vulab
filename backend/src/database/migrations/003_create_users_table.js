@@ -1,3 +1,6 @@
+const crypto = require('crypto')
+const bcrypt = require('bcrypt')
+
 module.exports = {
   name: '003_create_users_table',
 
@@ -21,9 +24,10 @@ module.exports = {
 
     if (!rows || rows.length === 0) {
       const masterPassword = 'admin123'
+      const hashedPassword = await bcrypt.hash(masterPassword, 10)
       await connection.query(
         'INSERT INTO users (username, password, role) VALUES (?, ?, ?)',
-        ['admin', masterPassword, 'master_admin'],
+        ['admin', hashedPassword, 'master_admin'],
       )
       console.log(`Master admin created: admin / ${masterPassword}`)
     }
