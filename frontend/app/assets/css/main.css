@@ -88,6 +88,35 @@
   --border: 3px;
 }
 
+/* Neutral admin theme */
+@plugin "daisyui/theme" {
+  name: "neutral";
+  --color-primary: #262626;
+  --color-primary-content: #FAFAFA;
+  --color-secondary: #525252;
+  --color-secondary-content: #FAFAFA;
+  --color-accent: #404040;
+  --color-accent-content: #FAFAFA;
+  --color-neutral: #171717;
+  --color-neutral-content: #FAFAFA;
+  --color-base-100: #FFFFFF;
+  --color-base-200: #F5F5F5;
+  --color-base-300: #E5E5E5;
+  --color-base-content: #171717;
+  --color-info: #2563EB;
+  --color-info-content: #FFFFFF;
+  --color-success: #16A34A;
+  --color-success-content: #FFFFFF;
+  --color-warning: #D97706;
+  --color-warning-content: #FFFFFF;
+  --color-error: #DC2626;
+  --color-error-content: #FFFFFF;
+  --radius-selector: 0.5rem;
+  --radius-field: 0.5rem;
+  --radius-box: 0.75rem;
+  --border: 1px;
+}
+
 /* Grain overlay */
 .grain-overlay {
   position: fixed;

@@ -4,6 +4,7 @@ import { DatabaseModule } from './database/database.module';
 import { EmailModule } from './emails/email.module';
 import { NotepadModule } from './notepad/notepad.module';
 import { HealthModule } from './health/health.module';
+import { AdminModule } from './admin/admin.module';
 import { CleanupService } from './cleanup/cleanup.service';
 
 @Module({
@@ -13,6 +14,7 @@ import { CleanupService } from './cleanup/cleanup.service';
     EmailModule,
     NotepadModule,
     HealthModule,
+    AdminModule,
   ],
   providers: [CleanupService],
 })
