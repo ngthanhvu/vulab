@@ -1,9 +1,14 @@
-import { Controller, Post, Body, UnauthorizedException } from '@nestjs/common';
+import { Controller, Post, Body, Headers, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
 interface LoginBody {
   username: string;
   password: string;
+}
+
+interface ChangePasswordBody {
+  currentPassword: string;
+  newPassword: string;
 }
 
 @Controller('api/auth')
@@ -19,5 +24,19 @@ export class AuthController {
     }
 
     return this.authService.login({ username, password });
+  }
+
+  @Post('change-password')
+  async changePassword(
+    @Headers('authorization') authHeader: string | undefined,
+    @Body() body: ChangePasswordBody,
+  ) {
+    const { currentPassword, newPassword } = body;
+
+    if (!currentPassword || !newPassword) {
+      throw new UnauthorizedException('Vui lòng nhập đầy đủ mật khẩu');
+    }
+
+    return this.authService.changePassword(authHeader, currentPassword, newPassword);
   }
 }

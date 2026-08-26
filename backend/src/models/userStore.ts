@@ -116,4 +116,15 @@ export async function findUserById(id: number): Promise<User | null> {
   return rowToUser(rows[0]);
 }
 
+export async function updateUserPassword(
+  id: number,
+  hashedPassword: string,
+): Promise<boolean> {
+  const [result] = await db.execute<ResultSetHeader>(
+    'UPDATE users SET password = ? WHERE id = ?',
+    [hashedPassword, id],
+  );
+  return (result.affectedRows ?? 0) > 0;
+}
+
 

@@ -27,6 +27,42 @@ describe('AuthService', () => {
     };
   }
 
+  describe('changePassword', () => {
+    it('should change password with valid credentials', async () => {
+      const hashedPassword = await bcrypt.hash('admin123', 10);
+      jest
+        .spyOn(userStore, 'findUserByUsername')
+        .mockResolvedValueOnce(mockAdminUser(hashedPassword));
+      jest.spyOn(userStore, 'updateUserPassword').mockResolvedValueOnce(true);
+
+      const result = await service.changePassword(
+        'Bearer admin:123:abc',
+        'admin123',
+        'newpassword',
+      );
+
+      expect(result.success).toBe(true);
+      expect(userStore.updateUserPassword).toHaveBeenCalled();
+    });
+
+    it('should throw when current password is wrong', async () => {
+      const hashedPassword = await bcrypt.hash('admin123', 10);
+      jest
+        .spyOn(userStore, 'findUserByUsername')
+        .mockResolvedValueOnce(mockAdminUser(hashedPassword));
+
+      await expect(
+        service.changePassword('Bearer admin:123:abc', 'wrongpassword', 'newpassword'),
+      ).rejects.toThrow(UnauthorizedException);
+    });
+
+    it('should throw when token is missing', async () => {
+      await expect(
+        service.changePassword(undefined, 'admin123', 'newpassword'),
+      ).rejects.toThrow(UnauthorizedException);
+    });
+  });
+
   describe('login', () => {
     it('should return token and user on valid credentials', async () => {
       const hashedPassword = await bcrypt.hash('admin123', 10);

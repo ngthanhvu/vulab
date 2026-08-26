@@ -6,6 +6,7 @@ import { NotepadModule } from './notepad/notepad.module';
 import { HealthModule } from './health/health.module';
 import { AdminModule } from './admin/admin.module';
 import { AuthModule } from './auth/auth.module';
+import { SettingsModule } from './settings/settings.module';
 import { CleanupService } from './cleanup/cleanup.service';
 
 @Module({
@@ -17,6 +18,7 @@ import { CleanupService } from './cleanup/cleanup.service';
     HealthModule,
     AdminModule,
     AuthModule,
+    SettingsModule,
   ],
   providers: [CleanupService],
 })
