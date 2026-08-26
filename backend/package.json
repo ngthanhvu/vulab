@@ -27,6 +27,8 @@
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/schedule": "^5.0.0",
+    "@types/bcrypt": "^6.0.0",
+    "bcrypt": "^6.0.0",
     "imapflow": "^1.7.1",
     "mailparser": "^3.9.15",
     "mysql2": "^3.23.3",

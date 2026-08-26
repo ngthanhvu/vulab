@@ -18,6 +18,11 @@ interface CreateNoteBody {
 export class NotepadController {
   constructor(private readonly notepadService: NotepadService) {}
 
+  @Get()
+  findAll() {
+    return this.notepadService.findAll();
+  }
+
   @Post()
   create(@Body() body: CreateNoteBody) {
     return this.notepadService.create({

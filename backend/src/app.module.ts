@@ -5,6 +5,7 @@ import { EmailModule } from './emails/email.module';
 import { NotepadModule } from './notepad/notepad.module';
 import { HealthModule } from './health/health.module';
 import { AdminModule } from './admin/admin.module';
+import { AuthModule } from './auth/auth.module';
 import { CleanupService } from './cleanup/cleanup.service';
 
 @Module({
@@ -15,6 +16,7 @@ import { CleanupService } from './cleanup/cleanup.service';
     NotepadModule,
     HealthModule,
     AdminModule,
+    AuthModule,
   ],
   providers: [CleanupService],
 })

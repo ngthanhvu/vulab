@@ -63,6 +63,13 @@ export async function createNote(
   }
 }
 
+export async function getAllNotes(): Promise<Note[]> {
+  const [rows] = await db.execute<NoteRow[]>(
+    'SELECT id, slug, title, content, created_at, updated_at FROM notes ORDER BY id DESC',
+  );
+  return rows.map(rowToNote);
+}
+
 export async function getNoteBySlug(slug: string): Promise<Note | null> {
   const [rows] = await db.execute<NoteRow[]>(
     'SELECT id, slug, title, content, created_at, updated_at FROM notes WHERE slug = ?',

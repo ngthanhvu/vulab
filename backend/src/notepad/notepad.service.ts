@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import {
   createNote,
+  getAllNotes,
   getNoteBySlug,
   updateNote,
   deleteNote,
@@ -26,6 +27,11 @@ export class NotepadService {
   async create(dto: CreateNoteDto): Promise<NoteResponse> {
     const note = await createNote(dto.title, dto.content);
     return this.toResponse(note);
+  }
+
+  async findAll(): Promise<NoteResponse[]> {
+    const notes = await getAllNotes();
+    return notes.map((note) => this.toResponse(note));
   }
 
   async findOne(slug: string): Promise<NoteResponse> {

@@ -1,5 +1,11 @@
 import { Controller, Get } from '@nestjs/common';
 import * as os from 'os';
+import { RowDataPacket } from 'mysql2/promise';
+import { db } from '../config/database';
+
+interface CountRow extends RowDataPacket {
+  count: number;
+}
 
 @Controller('api/admin')
 export class AdminController {
@@ -67,5 +73,24 @@ export class AdminController {
     }
 
     return `${value.toFixed(2)} ${units[unitIndex]}`;
+  }
+
+  @Get('stats')
+  async getStats() {
+    const [usersRow] = await db.execute<CountRow[]>(
+      'SELECT COUNT(*) as count FROM users',
+    );
+    const [notesRow] = await db.execute<CountRow[]>(
+      'SELECT COUNT(*) as count FROM notes',
+    );
+    const [emailsRow] = await db.execute<CountRow[]>(
+      'SELECT COUNT(*) as count FROM emails',
+    );
+
+    return {
+      users: Number(usersRow[0].count),
+      notes: Number(notesRow[0].count),
+      emails: Number(emailsRow[0].count),
+    };
   }
 }

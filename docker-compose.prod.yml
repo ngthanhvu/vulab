@@ -22,6 +22,23 @@ services:
           cpus: '0.25'
           memory: 256M
 
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.prod
+    container_name: vulab-client
+    ports:
+      - "3006:80"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
+
   backend:
     build:
       context: ./backend
