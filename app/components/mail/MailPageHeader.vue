@@ -11,35 +11,26 @@ defineEmits<{
 </script>
 
 <template>
-  <div class="relative w-full bg-volt border-y-[3px] border-void overflow-hidden py-1.5 z-10 shrink-0">
-    <div class="flex whitespace-nowrap animate-marquee">
-      <span class="font-mono text-xs tracking-widest uppercase font-bold mx-6">TEMP MAIL ✦ DISPOSABLE EMAIL ✦ BẢO VỆ
-        INBOX CA BẠN ✦ NO SPAM ✦</span>
-      <span class="font-mono text-xs tracking-widest uppercase font-bold mx-6">TEMP MAIL ✦ DISPOSABLE EMAIL ✦ BẢO VỆ
-        INBOX CỦA BẠN ✦ NO SPAM ✦</span>
-    </div>
-  </div>
-
-  <div class="relative z-20 border-b-[3px] border-void bg-paper shrink-0">
-    <div class="max-w-6xl mx-auto px-4 py-2.5 flex items-center justify-between">
+  <header class="relative z-20 border-b bg-card shrink-0">
+    <div class="w-full px-4 py-3 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <span
-          class="inline-flex items-center justify-center h-9 w-9 rounded-xl border-[3px] border-void bg-volt shadow-chunky-sm">
-          <span class="font-display font-black text-void text-base">@</span>
+          class="inline-flex items-center justify-center h-9 w-9 rounded-lg border bg-primary shadow-sm">
+          <span class="font-display font-black text-primary-foreground text-base">@</span>
         </span>
         <span class="font-display font-black text-lg tracking-tight">TEMP MAIL</span>
       </div>
       <div v-if="showActions" class="flex items-center gap-2">
-        <button class="btn btn-ghost btn-sm md:btn-xs font-mono text-xs tracking-widest uppercase"
+        <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-9 px-4 py-2 hover:bg-accent hover:text-accent-foreground"
           @click="$emit('refresh')">
           ↻ refresh
         </button>
         <button
-          class="btn btn-sm md:btn-xs font-display font-bold border-2 border-void bg-volt text-void hover:-translate-y-0.5 hover:shadow-chunky-volt transition-all shadow-chunky-sm px-3 py-1"
+          class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-9 px-4 py-2 bg-primary text-primary-foreground shadow hover:bg-primary/90"
           @click="$emit('generate')">
           + MỚI
         </button>
       </div>
     </div>
-  </div>
+  </header>
 </template>

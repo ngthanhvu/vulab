@@ -1,5 +1,5 @@
 <template>
-  <p class="text-sm text-base-content/60 font-normal">
+  <p class="text-sm text-muted-foreground">
     <slot />
   </p>
 </template>

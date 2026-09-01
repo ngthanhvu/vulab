@@ -22,20 +22,24 @@ useHead({
 
 <template>
   <MailShell>
-    <div class="relative z-20 max-w-6xl mx-auto p-4 md:p-6 pb-8 md:pb-12 flex-1 w-full flex flex-col">
+    <div class="flex-1 flex flex-col min-h-0 overflow-hidden">
       <MailAddressHeader :address="address" />
 
-      <div v-if="mail.loading && !mail.emails.length" class="shrink-0">
-        <SkeletonInbox />
-      </div>
+      <div class="flex-1 flex flex-col md:flex-row min-h-0 overflow-hidden">
+        <!-- Left sidebar -->
+        <aside class="w-full md:w-80 shrink-0 border-b md:border-b-0 md:border-r border-border bg-card overflow-hidden flex flex-col">
+          <MailAddressInboxList
+            :emails="mail.emails"
+            :selected="mail.selected"
+            :loading="mail.loading"
+            @select="mail.selectEmail"
+          />
+        </aside>
 
-      <div class="flex flex-col md:flex-row gap-4 mb-4 md:mb-6 flex-1 min-h-95 md:min-h-105">
-        <MailAddressInboxList
-          :emails="mail.emails"
-          :selected="mail.selected"
-          @select="mail.selectEmail"
-        />
-        <MailAddressEmailDetail :email="mail.selectedEmail" :address="address" />
+        <!-- Main content -->
+        <main class="flex-1 flex flex-col min-h-0 overflow-hidden p-3 md:p-4 bg-background">
+          <MailAddressEmailDetail :email="mail.selectedEmail" :address="address" />
+        </main>
       </div>
     </div>
 

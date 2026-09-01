@@ -23,27 +23,26 @@ useHead({
   <MailShell>
     <MailPageHeader :show-actions="mail.generated" @refresh="mail.fetchInbox" @generate="mail.generateEmail" />
 
-    <div class="relative z-20 max-w-6xl mx-auto px-4 py-3 md:py-4 flex-1 w-full flex flex-col">
-      <MailGenerator
-        :email-address="mail.emailAddress"
-        :copied="mail.copied"
-        :loading="!mail.generated"
-        @copy="mail.copyEmail"
-        @generate="mail.generateEmail"
-      />
+    <div class="flex-1 flex flex-col md:flex-row min-h-0 overflow-hidden">
+      <!-- Left sidebar: inbox list -->
+      <aside
+        class="w-full md:w-80 shrink-0 border-b md:border-b-0 md:border-r border-border bg-card overflow-hidden flex flex-col">
+        <MailInboxList :emails="mail.emails" :selected="mail.selected" :address="mail.emailAddress"
+          :loading="mail.loading" @select="mail.selectEmail" />
+      </aside>
 
-      <MailSearchInbox v-model:search-address="mail.searchAddress" @submit="goToInbox" />
+      <!-- Main content -->
+      <main class="flex-1 flex flex-col min-h-0 overflow-y-auto p-3 md:p-4 gap-3 bg-background">
+        <MailGenerator :email-address="mail.emailAddress" :copied="mail.copied" :loading="!mail.generated"
+          @copy="mail.copyEmail" @generate="mail.generateEmail" />
 
-      <div v-if="mail.generated" class="flex flex-col md:flex-row gap-3 mb-3 flex-1 min-h-95 md:min-h-105">
-        <MailInboxList
-          :emails="mail.emails"
-          :selected="mail.selected"
-          :address="mail.emailAddress"
-          @select="mail.selectEmail"
-        />
-        <MailEmailDetail :email="mail.selectedEmail" :address="mail.emailAddress" />
-      </div>
-      <SkeletonInbox v-else class="shrink-0" aria-busy="true" aria-label="Đang tải inbox" />
+        <!-- <MailSearchInbox v-model:search-address="mail.searchAddress" @submit="goToInbox" /> -->
+
+        <div v-if="mail.generated" class="flex-1 min-h-0">
+          <MailEmailDetail :email="mail.selectedEmail" :address="mail.emailAddress" />
+        </div>
+        <SkeletonEmailDetail v-else aria-busy="true" aria-label="Đang tải email" />
+      </main>
     </div>
 
     <MailPageFooter />

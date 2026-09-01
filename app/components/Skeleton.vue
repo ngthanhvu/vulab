@@ -32,19 +32,7 @@ const roundedClass = computed(() => {
 </script>
 
 <template>
-  <div class="skeleton bg-current/10"
-    :class="[roundedClass, { 'animate-pulse': animated, 'skeleton--circle': circle }, props.class]"
+  <div class="bg-current/10 inline-block align-middle leading-none"
+    :class="[roundedClass, { 'animate-pulse': animated, 'aspect-square': circle }, props.class]"
     :style="{ width, height }" aria-hidden="true" />
 </template>
-
-<style scoped>
-.skeleton {
-  display: inline-block;
-  vertical-align: middle;
-  line-height: 1;
-}
-
-.skeleton--circle {
-  aspect-ratio: 1 / 1;
-}
-</style>

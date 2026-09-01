@@ -1,53 +1,94 @@
 @import "tailwindcss";
 
-@plugin "daisyui" {
-    themes: custom --default;
-}
-
 @plugin "@tailwindcss/typography";
 
-@theme {
-  --color-void: #14092B;
-  --color-paper: #FFF9EF;
-  --color-volt: #CCFF00;
-  --color-magenta: #FF2D87;
-  --color-violet: #7C3AED;
-  --color-cyan: #00E5FF;
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
 
-  --font-display: "Unbounded", sans-serif;
-  --font-body: "Plus Jakarta Sans", sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  --radius: 0.625rem;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 4px);
+  --radius-xl: calc(var(--radius) + 8px);
 
-  --shadow-chunky: 8px 8px 0 0 #14092B;
-  --shadow-chunky-sm: 4px 4px 0 0 #14092B;
-  --shadow-chunky-volt: 8px 8px 0 0 #CCFF00;
-  --shadow-chunky-magenta: 8px 8px 0 0 #FF2D87;
-  --shadow-chunky-violet: 8px 8px 0 0 #7C3AED;
+  --font-display: "Google Sans Code", monospace;
+  --font-body: "Google Sans Code", monospace;
+  --font-mono: "Google Sans Code", monospace;
 
-  --animate-marquee: marquee 22s linear infinite;
-  --animate-marquee-reverse: marquee-reverse 26s linear infinite;
-  --animate-float: float 6s ease-in-out infinite;
-  --animate-blob: blob 12s ease-in-out infinite;
 }
 
-@keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
 }
 
-@keyframes marquee-reverse {
-  0% { transform: translateX(-50%); }
-  100% { transform: translateX(0); }
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.269 0 0);
+  --input: oklch(0.269 0 0);
+  --ring: oklch(0.439 0 0);
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
-}
+@layer base {
+  * {
+    border-color: var(--border);
+  }
 
-@keyframes blob {
-  0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
-  50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-body);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -56,82 +97,6 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-}
-
-/* DaisyUI theme */
-@plugin "daisyui/theme" {
-  name: "custom";
-  default: true;
-  --color-primary: #7C3AED;
-  --color-primary-content: #FFF9EF;
-  --color-secondary: #FF2D87;
-  --color-secondary-content: #FFF9EF;
-  --color-accent: #CCFF00;
-  --color-accent-content: #14092B;
-  --color-neutral: #14092B;
-  --color-neutral-content: #FFF9EF;
-  --color-base-100: #FFF9EF;
-  --color-base-200: #F5EDE0;
-  --color-base-300: #E8DDC8;
-  --color-base-content: #14092B;
-  --color-info: #00E5FF;
-  --color-info-content: #14092B;
-  --color-success: #CCFF00;
-  --color-success-content: #14092B;
-  --color-warning: #FF2D87;
-  --color-warning-content: #FFF9EF;
-  --color-error: #FF2D87;
-  --color-error-content: #FFF9EF;
-  --radius-selector: 0.75rem;
-  --radius-field: 0.75rem;
-  --radius-box: 1rem;
-  --border: 3px;
-}
-
-/* Neutral admin theme */
-@plugin "daisyui/theme" {
-  name: "neutral";
-  --color-primary: #262626;
-  --color-primary-content: #FAFAFA;
-  --color-secondary: #525252;
-  --color-secondary-content: #FAFAFA;
-  --color-accent: #404040;
-  --color-accent-content: #FAFAFA;
-  --color-neutral: #171717;
-  --color-neutral-content: #FAFAFA;
-  --color-base-100: #FFFFFF;
-  --color-base-200: #F5F5F5;
-  --color-base-300: #E5E5E5;
-  --color-base-content: #171717;
-  --color-info: #2563EB;
-  --color-info-content: #FFFFFF;
-  --color-success: #16A34A;
-  --color-success-content: #FFFFFF;
-  --color-warning: #D97706;
-  --color-warning-content: #FFFFFF;
-  --color-error: #DC2626;
-  --color-error-content: #FFFFFF;
-  --radius-selector: 0.5rem;
-  --radius-field: 0.5rem;
-  --radius-box: 0.75rem;
-  --border: 1px;
-}
-
-/* Grain overlay */
-.grain-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  pointer-events: none;
-  opacity: 0.06;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-/* Dot grid for dark sections */
-.dot-grid {
-  background-image: radial-gradient(rgba(255, 249, 239, 0.08) 1px, transparent 1px);
-  background-size: 22px 22px;
 }
 
 /* Hide scrollbar but keep functionality */

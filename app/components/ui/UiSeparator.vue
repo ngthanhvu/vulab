@@ -1,5 +1,5 @@
 <template>
-  <div class="shrink-0 bg-neutral-200" :class="orientation === 'horizontal' ? 'h-[1px] w-full' : 'h-full w-[1px]'">
+  <div class="shrink-0 bg-border" :class="orientation === 'horizontal' ? 'h-[1px] w-full' : 'h-full w-[1px]'">
   </div>
 </template>
 

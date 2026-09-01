@@ -32,11 +32,12 @@ export const useMailStore = defineStore('mail', {
 
     async fetchDomains() {
       const api = useMailApi()
+      this.loading = true
       try {
         const list = await api.fetchDomains()
-        this.domains = list
-        if (list.length > 0) {
-          this.selectedDomain = list[Math.floor(Math.random() * list.length)]
+        this.domains = list.length > 0 ? list : ['mail.thanhvu.net']
+        if (this.domains.length > 0) {
+          this.selectedDomain = this.domains[Math.floor(Math.random() * this.domains.length)] || 'mail.thanhvu.net'
           if (!this.emailAddress) {
             await this.generateEmail()
           } else {
@@ -45,6 +46,14 @@ export const useMailStore = defineStore('mail', {
         }
       } catch (e) {
         console.error(e)
+        if (!this.domains.length) {
+          this.domains = ['mail.thanhvu.net']
+          if (!this.emailAddress) {
+            await this.generateEmail()
+          }
+        }
+      } finally {
+        this.loading = false
       }
     },
 
@@ -52,7 +61,8 @@ export const useMailStore = defineStore('mail', {
       const api = useMailApi()
       this.loading = true
       try {
-        const domain = this.domains[Math.floor(Math.random() * this.domains.length)]
+        const domainList = this.domains.length > 0 ? this.domains : ['mail.thanhvu.net']
+        const domain = domainList[Math.floor(Math.random() * domainList.length)] || 'mail.thanhvu.net'
         this.selectedDomain = domain
         this.emailAddress = await api.generateEmail(domain)
         this.generated = true
@@ -70,11 +80,14 @@ export const useMailStore = defineStore('mail', {
       const api = useMailApi()
       const addr = address || this.emailAddress
       if (!addr) return
+      this.loading = true
       try {
         const data = await api.fetchInbox(addr)
         this.emails = data.emails || []
       } catch (e) {
         console.error(e)
+      } finally {
+        this.loading = false
       }
     },
 
