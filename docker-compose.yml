@@ -1,72 +1,20 @@
 services:
-  frontend:
+  app:
     build:
-      context: ./frontend
+      context: .
       dockerfile: Dockerfile
-    container_name: vuthanh-frontend
+    container_name: vuthanh-app
     ports:
       - "3005:3005"
     volumes:
-      - ./frontend:/app
+      - .:/app
       - /app/node_modules
+      - tempmail_data:/app/data
+    env_file:
+      - .env
     environment:
       - NUXT_HOST=0.0.0.0
       - NUXT_PORT=3005
 
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    container_name: vuthanh-backend
-    expose:
-      - "3001"
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
-    env_file:
-      - .env
-    depends_on:
-      - mysql
-      - redis
-  
-  client:
-    build:
-      context: ./client
-      dockerfile: Dockerfile
-    container_name: vuthanh-client
-    ports:
-      - "5173:5173"
-    volumes:
-      - ./client:/app
-      - /app/node_modules
-    environment:
-      - HOST=0.0.0.0
-
-  mysql:
-    image: mysql:8.0
-    container_name: vuthanh-mysql
-    restart: unless-stopped
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_DATABASE: ${DB_NAME:-vuthanh}
-      MYSQL_USER: ${DB_USER:-vuthanh}
-      MYSQL_PASSWORD: ${DB_PASS:-vuthanh123}
-    expose:
-      - "3306"
-    ports:
-      - "3307:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
-
-  redis:
-    image: redis:7-alpine
-    container_name: vuthanh-redis
-    restart: unless-stopped
-    expose:
-      - "6379"
-    volumes:
-      - redis_data:/data
-
 volumes:
-  mysql_data:
-  redis_data:
+  tempmail_data:

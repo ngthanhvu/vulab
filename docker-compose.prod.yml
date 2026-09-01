@@ -1,17 +1,21 @@
 name: vulab
 
 services:
-  frontend:
+  app:
     build:
-      context: ./frontend
+      context: .
       dockerfile: Dockerfile.prod
-    container_name: vulab-frontend
+    container_name: vulab-app
     ports:
       - "3000:3000"
+    env_file:
+      - .env
     environment:
       - NUXT_HOST=0.0.0.0
       - NUXT_PORT=3000
       - NODE_OPTIONS=--max-old-space-size=768
+    volumes:
+      - tempmail_data:/app/data
     restart: unless-stopped
     deploy:
       resources:
@@ -21,95 +25,6 @@ services:
         reservations:
           cpus: '0.25'
           memory: 256M
-
-  client:
-    build:
-      context: ./client
-      dockerfile: Dockerfile.prod
-    container_name: vulab-client
-    ports:
-      - "3006:80"
-    restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 512M
-        reservations:
-          cpus: '0.1'
-          memory: 128M
-
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile.prod
-    container_name: vulab-backend
-    expose:
-      - "3001"
-    env_file:
-      - .env
-    environment:
-      - NODE_OPTIONS=--max-old-space-size=768
-    restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          cpus: '1.0'
-          memory: 1G
-        reservations:
-          cpus: '0.25'
-          memory: 256M
-    depends_on:
-      mysql:
-        condition: service_healthy
-      redis:
-        condition: service_started
-
-  mysql:
-    image: mysql:8.0
-    container_name: vulab-mysql
-    restart: unless-stopped
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_DATABASE: ${DB_NAME:-vuthanh}
-      MYSQL_USER: ${DB_USER:-vuthanh}
-      MYSQL_PASSWORD: ${DB_PASS:-vuthanh123}
-    expose:
-      - "3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
-    deploy:
-      resources:
-        limits:
-          cpus: '1.5'
-          memory: 1.5G
-        reservations:
-          cpus: '0.5'
-          memory: 512M
-    healthcheck:
-      test: ["CMD-SHELL", "mysql -u$$MYSQL_USER -p$$MYSQL_PASSWORD -e 'SELECT 1' || exit 1"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
-      start_period: 30s
-
-  redis:
-    image: redis:7-alpine
-    container_name: vulab-redis
-    restart: unless-stopped
-    expose:
-      - "6379"
-    volumes:
-      - redis_data:/data
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 512M
-        reservations:
-          cpus: '0.1'
-          memory: 64M
 
 volumes:
-  mysql_data:
-  redis_data:
+  tempmail_data:

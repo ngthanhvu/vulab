@@ -26,17 +26,8 @@ pipeline {
         }
 
         stage('Test') {
-            parallel {
-                stage('Backend tests') {
-                    steps {
-                        sh 'docker run --rm -v "$PWD/backend:/app" -w /app node:22-alpine sh -c "npm ci && npm test"'
-                    }
-                }
-                stage('Frontend tests') {
-                    steps {
-                        sh 'docker run --rm -v "$PWD/frontend:/app" -w /app node:22-alpine sh -c "npm ci && npm test"'
-                    }
-                }
+            steps {
+                sh 'docker run --rm -v "$PWD:/app" -w /app node:22 sh -c "apt-get update && apt-get install -y python3 make g++ && npm ci && npm test"'
             }
         }
 

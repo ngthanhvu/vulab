@@ -88,21 +88,6 @@ docker compose \
 
 
 # ==========================================
-# DATABASE MIGRATIONS
-# ==========================================
-
-echo "==> Running database migrations ..."
-
-sleep 5
-docker compose \
-    -f "$COMPOSE_FILE" \
-    exec -T backend npm run migrate || true
-
-
-echo "==> Migrations hoàn tất."
-
-
-# ==========================================
 # STATUS
 # ==========================================
 

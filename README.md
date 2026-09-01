@@ -1,20 +1,26 @@
-# Code Lab
-
-Lưu trữ các bài thực hành, thử nghiệm kỹ thuật và dự án cá nhân.
-
-## Dự án hiện tại
+# Temp Mail
 
 Temporary Mail System: Nhận và xem mail real-time thông qua kết nối IMAP.
 
-- **Frontend**: Nuxt 4, Vue 3, Tailwind CSS v4, DaisyUI
-- **Backend**: Express, TypeScript
-- **Email Handling**: imapflow, mailparser
+- **Stack**: Nuxt 4, Vue 3, Tailwind CSS v4, DaisyUI
+- **Server**: Nitro (built-in Nuxt server routes)
+- **Database**: SQLite (better-sqlite3)
+- **Email**: imapflow, mailparser
 
 ## Cấu trúc thư mục
 
-- `frontend/`: Giao diện người dùng
-- `backend/`: API server xử lý logic email
+- `app/`: Frontend Vue components, pages, stores
+- `server/`: Nitro API routes, IMAP service, SQLite
 - `.env.example`: Mẫu cấu hình môi trường
+
+## Chạy
+
+```bash
+cp .env.example .env
+# Sửa .env với thông tin IMAP của bạn
+npm install
+npm run dev
+```
 
 ## Tác giả
 
