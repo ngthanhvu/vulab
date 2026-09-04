@@ -7,7 +7,7 @@ defineProps<Props>()
 </script>
 
 <template>
-  <div class="shrink-0 flex items-center justify-between border-b bg-card px-4 py-3">
+  <div class="relative z-20 shrink-0 flex items-center justify-between border-b bg-card px-4 py-3">
     <div>
       <NuxtLink to="/mail" class="inline-flex items-center text-xs font-mono text-muted-foreground hover:text-foreground mb-1">
         ← TRANG CHỦ TEMP MAIL

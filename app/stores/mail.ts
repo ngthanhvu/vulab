@@ -76,18 +76,18 @@ export const useMailStore = defineStore('mail', {
       }
     },
 
-    async fetchInbox(address?: string) {
+    async fetchInbox(address?: string, silent = false) {
       const api = useMailApi()
       const addr = address || this.emailAddress
       if (!addr) return
-      this.loading = true
+      if (!silent) this.loading = true
       try {
         const data = await api.fetchInbox(addr)
         this.emails = data.emails || []
       } catch (e) {
         console.error(e)
       } finally {
-        this.loading = false
+        if (!silent) this.loading = false
       }
     },
 

@@ -10,7 +10,7 @@ function goToInbox() {
 
 onMounted(() => {
   mail.fetchDomains()
-  const interval = setInterval(() => mail.fetchInbox(), 5000)
+  const interval = setInterval(() => mail.fetchInbox(undefined, true), 5000)
   onUnmounted(() => clearInterval(interval))
 })
 
@@ -26,13 +26,13 @@ useHead({
     <div class="flex-1 flex flex-col md:flex-row min-h-0 overflow-hidden">
       <!-- Left sidebar: inbox list -->
       <aside
-        class="w-full md:w-80 shrink-0 border-b md:border-b-0 md:border-r border-border bg-card overflow-hidden flex flex-col">
+        class="w-full md:w-80 md:fixed md:left-0 md:top-0 md:h-screen md:z-10 shrink-0 border-b md:border-b-0 md:border-r border-border bg-card overflow-hidden flex flex-col">
         <MailInboxList :emails="mail.emails" :selected="mail.selected" :address="mail.emailAddress"
           :loading="mail.loading" @select="mail.selectEmail" />
       </aside>
 
       <!-- Main content -->
-      <main class="flex-1 flex flex-col min-h-0 overflow-y-auto p-3 md:p-4 gap-3 bg-background">
+      <main class="flex-1 flex flex-col min-h-0 overflow-y-auto p-3 md:p-4 gap-3 bg-background md:pl-80">
         <MailGenerator :email-address="mail.emailAddress" :copied="mail.copied" :loading="!mail.generated"
           @copy="mail.copyEmail" @generate="mail.generateEmail" />
 
@@ -45,6 +45,6 @@ useHead({
       </main>
     </div>
 
-    <MailPageFooter />
+    <MailPageFooter class="md:pl-80" />
   </MailShell>
 </template>
