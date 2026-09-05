@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: vuthanh-app
+    container_name: tempmail-app
     ports:
       - "3005:3005"
     volumes:

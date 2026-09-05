@@ -1,11 +1,11 @@
-name: vulab
+name: tempmail
 
 services:
   app:
     build:
       context: .
       dockerfile: Dockerfile.prod
-    container_name: vulab-app
+    container_name: tempmail-app
     ports:
       - "3005:3005"
     env_file:
