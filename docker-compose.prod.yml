@@ -7,12 +7,12 @@ services:
       dockerfile: Dockerfile.prod
     container_name: vulab-app
     ports:
-      - "3000:3000"
+      - "3005:3005"
     env_file:
       - .env
     environment:
       - NUXT_HOST=0.0.0.0
-      - NUXT_PORT=3000
+      - NUXT_PORT=3005
       - NODE_OPTIONS=--max-old-space-size=768
     volumes:
       - tempmail_data:/app/data
